@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Gunbound Ruler Calculator</title>
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&display=swap" rel="stylesheet">
   <style>
     body {
       margin: 0;
@@ -22,13 +22,19 @@
     #bfrv {
       margin-top: 20px;
       width: 400px;
-      height: 40px;
+      height: 20px;
       border: 5px solid black;
       display: flex;
       background: linear-gradient(to bottom, #111, #222);
       position: relative;
       box-shadow: 0 0 10px #00ff99aa;
+      animation: pulseBar 2s infinite alternate;
     }
+    @keyframes pulseBar {
+      0% { box-shadow: 0 0 5px #00ff99; }
+      100% { box-shadow: 0 0 15px #00ff99; }
+    }
+
     .bfrv-part {
       flex: 1;
       border-right: 1px solid #666;
@@ -67,15 +73,14 @@
       display: flex;
       gap: 20px;
     }
+
     #angleButtons {
       position: absolute;
       left: 10px;
       top: 50%;
       transform: translateY(-50%);
-      display: flex;
-      flex-direction: column;
-      flex-wrap: wrap;
-      max-height: 90vh;
+      display: grid;
+      grid-template-columns: repeat(5, 70px);
       gap: 5px;
     }
     .angle-btn {
@@ -95,22 +100,14 @@
       font-weight: bold;
     }
 
-    #explanation {
-      text-align: center;
-      max-width: 700px;
-      margin: 10px 0 20px;
-      font-size: 16px;
-      line-height: 1.5;
-      color: #ccc;
-    }
-
     #ruler {
       position: absolute;
       bottom: 0;
       width: 800px;
-      height: 150px;
+      height: 100px;
       display: flex;
       justify-content: center;
+      animation: glowRuler 2s infinite alternate;
     }
     .segment {
       width: 40px;
@@ -122,6 +119,10 @@
     .segment.active {
       background: linear-gradient(180deg, #0f0, #060);
       box-shadow: inset 0 0 5px #0f0;
+    }
+    @keyframes glowRuler {
+      0% { box-shadow: 0 0 5px #0f0; }
+      100% { box-shadow: 0 0 15px #0f0; }
     }
 
     #gameFrame {
@@ -157,6 +158,24 @@
     @keyframes pulse {
       from { opacity: 0.5; }
       to { opacity: 1; }
+    }
+
+    #centerText {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 32px;
+      font-weight: 900;
+      color: #ff6600;
+      text-align: center;
+      animation: pulseText 1.5s infinite;
+      text-shadow: 0 0 10px #ff6600, 0 0 20px #ff6600;
+    }
+    @keyframes pulseText {
+      0% { transform: translate(-50%, -50%) scale(1); }
+      50% { transform: translate(-50%, -50%) scale(1.1); }
+      100% { transform: translate(-50%, -50%) scale(1); }
     }
   </style>
 </head>
@@ -194,40 +213,19 @@
   </div>
 
   <div id="angleButtons"></div>
-
-  <div id="explanation">
-    Esta régua representa a largura total da tela de Gunbound dividida em 20 partes de 40 pixels. Ao passar o mouse sobre qualquer segmento inferior, a força necessária para atingir esse ponto será calculada em tempo real com base no mobile e ângulo selecionados. O resultado da força será exibido na barra superior (BFRV), que é visualmente preenchida proporcionalmente de 0.00 até 4.00 de força.
-  </div>
-
   <div id="ruler"></div>
   <div id="gameFrame"></div>
+  <div id="centerText">ENCAIXE A JANELA DO JOGO AQUI!</div>
 
   <script>
     const mobiles = {
-      Aduka:      { speed: 240, gravity: 94 },
-      Armor:      { speed: 230, gravity: 98 },
-      Mage:       { speed: 225, gravity: 90 },
-      Grub:       { speed: 250, gravity: 98 },
-      Ice:        { speed: 250, gravity: 98 },
-      Nak:        { speed: 205, gravity: 98 },
-      Trico:      { speed: 215, gravity: 98 },
-      BigFoot:    { speed: 210, gravity: 98 },
-      Boomer:     { speed: 175, gravity: 46 },
-      Raon:       { speed: 220, gravity: 98 },
-      Lightning:  { speed: 235, gravity: 90 },
-      JD:         { speed: 250, gravity: 98 },
-      ASate:      { speed: 225, gravity: 98 },
-      Turtle:     { speed: 230, gravity: 98 },
-      Knight:     { speed: 250, gravity: 90 },
-      Dragon:     { speed: 240, gravity: 98 },
-      JFrog:      { speed: 280, gravity: 98 },
-      Kalsiddon:  { speed: 240, gravity: 98 }
+      Aduka:{speed:240,gravity:94},Armor:{speed:230,gravity:98},Mage:{speed:225,gravity:90},Grub:{speed:250,gravity:98},Ice:{speed:250,gravity:98},Nak:{speed:205,gravity:98},Trico:{speed:215,gravity:98},BigFoot:{speed:210,gravity:98},Boomer:{speed:175,gravity:46},Raon:{speed:220,gravity:98},Lightning:{speed:235,gravity:90},JD:{speed:250,gravity:98},ASate:{speed:225,gravity:98},Turtle:{speed:230,gravity:98},Knight:{speed:250,gravity:90},Dragon:{speed:240,gravity:98},JFrog:{speed:280,gravity:98},Kalsiddon:{speed:240,gravity:98}
     };
 
     const angleButtonsContainer = document.getElementById('angleButtons');
     let selectedAngle = 45;
 
-    for (let i = 89; i >= 40; i--) {
+    for (let i = 40; i <= 89; i++) {
       const btn = document.createElement('button');
       btn.textContent = `${i}°`;
       btn.className = 'angle-btn';
