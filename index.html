@@ -137,7 +137,6 @@
       <option value="Kalsiddon">Kalsiddon</option>
     </select>
     <select id="angleSelect">
-      <!-- Angles 40° to 89° -->
       " + [...Array(50).keys()].map(i => `<option value="${i + 40}">${i + 40}°</option>`).join('') + "
     </select>
   </div>
@@ -170,11 +169,19 @@
       Kalsiddon:  { speed: 240, gravity: 98 }
     };
 
+    const angleSelect = document.getElementById('angleSelect');
+    angleSelect.innerHTML = '';
+    for (let i = 40; i <= 89; i++) {
+      const option = document.createElement('option');
+      option.value = i;
+      option.textContent = `${i}°`;
+      angleSelect.appendChild(option);
+    }
+
     const ruler = document.getElementById('ruler');
     const bfrvFill = document.getElementById('bfrv-fill');
     const forceText = document.getElementById('bfrv-force-text');
     const mobileSelect = document.getElementById('mobileSelect');
-    const angleSelect = document.getElementById('angleSelect');
 
     for (let i = 0; i < 20; i++) {
       const segment = document.createElement('div');
