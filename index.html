@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gunbound Ruler Calculator</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: linear-gradient(180deg, #0a0a0a 0%, #1a1a1a 100%);
+      color: white;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    /* BFRV - Barra Superior */
+    #bfrv {
+      margin-top: 20px;
+      width: 400px;
+      height: 80px;
+      border: 5px solid black;
+      display: flex;
+      background-color: #111;
+      position: relative;
+    }
+    .bfrv-part {
+      flex: 1;
+      border-right: 1px solid #444;
+      position: relative;
+    }
+    .bfrv-part:last-child {
+      border-right: none;
+    }
+    #bfrv-fill {
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 100%;
+      background: orange;
+      z-index: 1;
+      opacity: 0.8;
+    }
+
+    /* Controles */
+    #controls {
+      margin: 20px 0;
+      display: flex;
+      gap: 20px;
+    }
+    select {
+      font-size: 18px;
+      padding: 5px;
+      border-radius: 5px;
+    }
+
+    /* Régua Inferior */
+    #ruler {
+      position: absolute;
+      bottom: 0;
+      width: 800px;
+      height: 150px;
+      display: flex;
+      justify-content: center;
+    }
+    .segment {
+      width: 40px;
+      height: 100%;
+      background-color: #333;
+      border: 1px solid #222;
+      transition: background 0.1s;
+    }
+    .segment.active {
+      background-color: orange;
+    }
+  </style>
+</head>
+<body>
+  <div id="bfrv">
+    <div id="bfrv-fill"></div>
+    <div class="bfrv-part"></div>
+    <div class="bfrv-part"></div>
+    <div class="bfrv-part"></div>
+    <div class="bfrv-part"></div>
+  </div>
+
+  <div id="controls">
+    <select id="mobileSelect">
+      <option value="Aduka">Aduka</option>
+      <option value="Armor">Armor</option>
+      <option value="Mage">Mage</option>
+      <option value="Grub">Grub</option>
+      <option value="Ice">Ice</option>
+    </select>
+    <select id="angleSelect">
+      <option value="40">40°</option>
+      <option value="45">45°</option>
+      <option value="50">50°</option>
+      <option value="55">55°</option>
+      <option value="60">60°</option>
+      <option value="65">65°</option>
+      <option value="70">70°</option>
+      <option value="75">75°</option>
+      <option value="80">80°</option>
+      <option value="81">81°</option>
+      <option value="82">82°</option>
+      <option value="83">83°</option>
+      <option value="84">84°</option>
+      <option value="85">85°</option>
+      <option value="86">86°</option>
+      <option value="87">87°</option>
+      <option value="88">88°</option>
+      <option value="89">89°</option>
+    </select>
+  </div>
+
+  <div id="ruler"></div>
+
+  <script>
+    const mobiles = {
+      Aduka:    { speed: 240, gravity: 94 },
+      Armor:    { speed: 230, gravity: 98 },
+      Mage:     { speed: 225, gravity: 90 },
+      Grub:     { speed: 250, gravity: 98 },
+      Ice:      { speed: 250, gravity: 98 },
+    };
+
+    const ruler = document.getElementById('ruler');
+    const bfrvFill = document.getElementById('bfrv-fill');
+    const mobileSelect = document.getElementById('mobileSelect');
+    const angleSelect = document.getElementById('angleSelect');
+
+    // Criar os 20 segmentos da régua
+    for (let i = 0; i < 20; i++) {
+      const segment = document.createElement('div');
+      segment.classList.add('segment');
+      ruler.appendChild(segment);
+    }
+
+    const segments = document.querySelectorAll('.segment');
+
+    ruler.addEventListener('mousemove', (e) => {
+      const rect = ruler.getBoundingClientRect();
+      const mouseX = e.clientX - rect.left;
+      const index = Math.floor(mouseX / 40);
+
+      // Ativa visual das partes
+      segments.forEach((seg, i) => {
+        seg.classList.toggle('active', i <= index);
+      });
+
+      // Dados para o cálculo
+      const mobile = mobiles[mobileSelect.value];
+      const angle = parseInt(angleSelect.value);
+      const distance = (index + 1) * 40;
+
+      if (!mobile || angle <= 0) return;
+
+      const rad = angle * Math.PI / 180;
+      const sin = Math.sin(2 * rad);
+
+      const top = mobile.gravity * distance;
+      const bottom = 4 * Math.pow(mobile.speed, 2) * sin;
+      const force = 4 * Math.sqrt(top / bottom);
+
+      // Força entre 0 e 4.00
+      const clamped = Math.min(4.0, Math.max(0, force));
+      const percent = (clamped / 4.0) * 100;
+
+      bfrvFill.style.width = `${percent}%`;
+    });
+  </script>
+</body>
+</html>
