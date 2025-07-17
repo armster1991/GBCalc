@@ -4,11 +4,12 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Gunbound Ruler Calculator</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500&display=swap" rel="stylesheet">
   <style>
     body {
       margin: 0;
-      font-family: Arial, sans-serif;
-      background: linear-gradient(180deg, #0a0a0a 0%, #1a1a1a 100%);
+      font-family: 'Orbitron', sans-serif;
+      background: linear-gradient(180deg, #0d0d0d 0%, #1a1a1a 100%);
       color: white;
       display: flex;
       flex-direction: column;
@@ -17,20 +18,21 @@
       overflow: hidden;
     }
 
-    /* BFRV - Barra Superior */
     #bfrv {
       margin-top: 20px;
       width: 400px;
       height: 80px;
       border: 5px solid black;
       display: flex;
-      background-color: #111;
+      background: linear-gradient(to bottom, #111, #222);
       position: relative;
+      box-shadow: 0 0 10px #00ff99aa;
     }
     .bfrv-part {
       flex: 1;
-      border-right: 1px solid #444;
+      border-right: 1px solid #333;
       position: relative;
+      z-index: 2;
     }
     .bfrv-part:last-child {
       border-right: none;
@@ -40,12 +42,25 @@
       top: 0;
       left: 0;
       height: 100%;
-      background: orange;
+      background: linear-gradient(90deg, #00ff99, #009966);
+      box-shadow: inset 0 0 10px #00ff99aa;
       z-index: 1;
-      opacity: 0.8;
+      opacity: 0.85;
+      transition: width 0.1s ease-in-out;
+    }
+    #bfrv-force-text {
+      position: absolute;
+      width: 100%;
+      text-align: center;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 24px;
+      font-weight: bold;
+      color: #fff;
+      z-index: 3;
+      text-shadow: 1px 1px 2px #000;
     }
 
-    /* Controles */
     #controls {
       margin: 20px 0;
       display: flex;
@@ -55,9 +70,20 @@
       font-size: 18px;
       padding: 5px;
       border-radius: 5px;
+      background-color: #222;
+      color: #0f0;
+      border: 1px solid #0f0;
     }
 
-    /* Régua Inferior */
+    #explanation {
+      text-align: center;
+      max-width: 700px;
+      margin: 10px 0 20px;
+      font-size: 16px;
+      line-height: 1.5;
+      color: #ccc;
+    }
+
     #ruler {
       position: absolute;
       bottom: 0;
@@ -69,18 +95,20 @@
     .segment {
       width: 40px;
       height: 100%;
-      background-color: #333;
-      border: 1px solid #222;
+      background: linear-gradient(180deg, #222, #111);
+      border: 1px solid #333;
       transition: background 0.1s;
     }
     .segment.active {
-      background-color: orange;
+      background: linear-gradient(180deg, #0f0, #060);
+      box-shadow: inset 0 0 5px #0f0;
     }
   </style>
 </head>
 <body>
   <div id="bfrv">
     <div id="bfrv-fill"></div>
+    <div id="bfrv-force-text">0.00</div>
     <div class="bfrv-part"></div>
     <div class="bfrv-part"></div>
     <div class="bfrv-part"></div>
@@ -94,46 +122,59 @@
       <option value="Mage">Mage</option>
       <option value="Grub">Grub</option>
       <option value="Ice">Ice</option>
+      <option value="Nak">Nak Machine</option>
+      <option value="Trico">Trico</option>
+      <option value="BigFoot">Big Foot</option>
+      <option value="Boomer">Boomer</option>
+      <option value="Raon">Raon Launcher</option>
+      <option value="Lightning">Lightning</option>
+      <option value="JD">J.D.</option>
+      <option value="ASate">A. Sate</option>
+      <option value="Turtle">Turtle</option>
+      <option value="Knight">Knight</option>
+      <option value="Dragon">Dragon</option>
+      <option value="JFrog">J.Frog</option>
+      <option value="Kalsiddon">Kalsiddon</option>
     </select>
     <select id="angleSelect">
-      <option value="40">40°</option>
-      <option value="45">45°</option>
-      <option value="50">50°</option>
-      <option value="55">55°</option>
-      <option value="60">60°</option>
-      <option value="65">65°</option>
-      <option value="70">70°</option>
-      <option value="75">75°</option>
-      <option value="80">80°</option>
-      <option value="81">81°</option>
-      <option value="82">82°</option>
-      <option value="83">83°</option>
-      <option value="84">84°</option>
-      <option value="85">85°</option>
-      <option value="86">86°</option>
-      <option value="87">87°</option>
-      <option value="88">88°</option>
-      <option value="89">89°</option>
+      ${[...Array(50).keys()].map(i => i + 40).filter(i => i <= 89).map(i => `<option value="${i}">${i}°</option>`).join('')}
     </select>
+  </div>
+
+  <div id="explanation">
+    Esta régua representa a largura total da tela de Gunbound dividida em 20 partes de 40 pixels. Ao passar o mouse sobre qualquer segmento inferior, a força necessária para atingir esse ponto será calculada em tempo real com base no mobile e ângulo selecionados. O resultado da força será exibido na barra superior (BFRV), que é visualmente preenchida proporcionalmente de 0.00 até 4.00 de força.
   </div>
 
   <div id="ruler"></div>
 
   <script>
     const mobiles = {
-      Aduka:    { speed: 240, gravity: 94 },
-      Armor:    { speed: 230, gravity: 98 },
-      Mage:     { speed: 225, gravity: 90 },
-      Grub:     { speed: 250, gravity: 98 },
-      Ice:      { speed: 250, gravity: 98 },
+      Aduka:      { speed: 240, gravity: 94 },
+      Armor:      { speed: 230, gravity: 98 },
+      Mage:       { speed: 225, gravity: 90 },
+      Grub:       { speed: 250, gravity: 98 },
+      Ice:        { speed: 250, gravity: 98 },
+      Nak:        { speed: 205, gravity: 98 },
+      Trico:      { speed: 215, gravity: 98 },
+      BigFoot:    { speed: 210, gravity: 98 },
+      Boomer:     { speed: 175, gravity: 46 },
+      Raon:       { speed: 220, gravity: 98 },
+      Lightning:  { speed: 235, gravity: 90 },
+      JD:         { speed: 250, gravity: 98 },
+      ASate:      { speed: 225, gravity: 98 },
+      Turtle:     { speed: 230, gravity: 98 },
+      Knight:     { speed: 250, gravity: 90 },
+      Dragon:     { speed: 240, gravity: 98 },
+      JFrog:      { speed: 280, gravity: 98 },
+      Kalsiddon:  { speed: 240, gravity: 98 }
     };
 
     const ruler = document.getElementById('ruler');
     const bfrvFill = document.getElementById('bfrv-fill');
+    const forceText = document.getElementById('bfrv-force-text');
     const mobileSelect = document.getElementById('mobileSelect');
     const angleSelect = document.getElementById('angleSelect');
 
-    // Criar os 20 segmentos da régua
     for (let i = 0; i < 20; i++) {
       const segment = document.createElement('div');
       segment.classList.add('segment');
@@ -147,12 +188,10 @@
       const mouseX = e.clientX - rect.left;
       const index = Math.floor(mouseX / 40);
 
-      // Ativa visual das partes
       segments.forEach((seg, i) => {
         seg.classList.toggle('active', i <= index);
       });
 
-      // Dados para o cálculo
       const mobile = mobiles[mobileSelect.value];
       const angle = parseInt(angleSelect.value);
       const distance = (index + 1) * 40;
@@ -161,16 +200,15 @@
 
       const rad = angle * Math.PI / 180;
       const sin = Math.sin(2 * rad);
-
       const top = mobile.gravity * distance;
       const bottom = 4 * Math.pow(mobile.speed, 2) * sin;
       const force = 4 * Math.sqrt(top / bottom);
 
-      // Força entre 0 e 4.00
       const clamped = Math.min(4.0, Math.max(0, force));
       const percent = (clamped / 4.0) * 100;
 
       bfrvFill.style.width = `${percent}%`;
+      forceText.textContent = clamped.toFixed(2);
     });
   </script>
 </body>
