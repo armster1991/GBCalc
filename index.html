@@ -30,7 +30,7 @@
     }
     .bfrv-part {
       flex: 1;
-      border-right: 1px solid #333;
+      border-right: 1px solid #666;
       position: relative;
       z-index: 2;
     }
@@ -137,7 +137,8 @@
       <option value="Kalsiddon">Kalsiddon</option>
     </select>
     <select id="angleSelect">
-      ${[...Array(50).keys()].map(i => i + 40).filter(i => i <= 89).map(i => `<option value="${i}">${i}°</option>`).join('')}
+      <!-- Angles 40° to 89° -->
+      " + [...Array(50).keys()].map(i => `<option value="${i + 40}">${i + 40}°</option>`).join('') + "
     </select>
   </div>
 
