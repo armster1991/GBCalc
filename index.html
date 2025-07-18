@@ -18,8 +18,13 @@
     <div class="bfr-fill" id="bfr-fill"></div>
   </div>
 
+  <div class="info-panel" id="info-panel">
+    <div>Mobile Selecionado: <span id="selected-mobile">Armor</span></div>
+    <div>Força Corrigida: <span id="corrected-power">2.00</span></div>
+    <div>Ângulo Calculado: <span id="calculated-angle">90</span></div>
+  </div>
+
   <div class="wind-buttons left">
-    <!-- 26 Contra-Vento -->
     <script>
       for (let i = 1; i <= 26; i++) {
         document.write(`<div class="wind-button red" data-value="-${i}">-${i}</div>`);
@@ -27,7 +32,6 @@
     </script>
   </div>
   <div class="wind-buttons right">
-    <!-- 26 A Favor -->
     <script>
       for (let i = 1; i <= 26; i++) {
         document.write(`<div class="wind-button green" data-value="${i}">${i}</div>`);
