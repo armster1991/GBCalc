@@ -5,49 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Visual Aim Calculator</title>
   <link rel="stylesheet" href="style.css"/>
-  
-  <script>
-    // Função para criar os botões de vento ANTES do calculo.js rodar
-    function criarBotoesVento() {
-      // Cria os containers caso ainda não existam
-      if (!document.getElementById('wind-left')) {
-        const leftDiv = document.createElement('div');
-        leftDiv.id = 'wind-left';
-        leftDiv.className = 'wind-buttons left';
-        document.body.appendChild(leftDiv);
-      }
-      if (!document.getElementById('wind-right')) {
-        const rightDiv = document.createElement('div');
-        rightDiv.id = 'wind-right';
-        rightDiv.className = 'wind-buttons right';
-        document.body.appendChild(rightDiv);
-      }
 
-      const leftContainer = document.getElementById('wind-left');
-      const rightContainer = document.getElementById('wind-right');
-
-      leftContainer.innerHTML = '';
-      rightContainer.innerHTML = '';
-
-      for(let i = 1; i <= 26; i++) {
-        const btnLeft = document.createElement('div');
-        btnLeft.className = 'wind-button red';
-        btnLeft.textContent = i;
-        btnLeft.dataset.value = -i;
-        leftContainer.appendChild(btnLeft);
-
-        const btnRight = document.createElement('div');
-        btnRight.className = 'wind-button green';
-        btnRight.textContent = i;
-        btnRight.dataset.value = i;
-        rightContainer.appendChild(btnRight);
-      }
-    }
-
-    document.addEventListener('DOMContentLoaded', criarBotoesVento);
-  </script>
-
+  <!-- Não mexi no calculo.js, só o chamei aqui -->
   <script defer src="calculo.js"></script>
+  
 </head>
 <body>
 
@@ -74,8 +35,40 @@
     <div>Ângulo Calculado: <span id="calculated-angle">89°</span></div>
   </div>
 
+  <!-- Botões de vento esquerda (vento contra) -->
+  <div class="wind-buttons left" id="wind-left">
+    <!-- Botões serão inseridos pelo script abaixo -->
+  </div>
+
+  <!-- Botões de vento direita (vento a favor) -->
+  <div class="wind-buttons right" id="wind-right">
+    <!-- Botões serão inseridos pelo script abaixo -->
+  </div>
+
   <!-- Régua -->
   <div class="ruler" id="ruler"></div>
+
+  <!-- Script para criar os botões de vento 1 a 26, já com data-value -->
+  <script>
+    const windLeft = document.getElementById('wind-left');
+    const windRight = document.getElementById('wind-right');
+
+    for(let i = 1; i <= 26; i++) {
+      // Botão vento contra (esquerda) - vermelho
+      const btnLeft = document.createElement('div');
+      btnLeft.className = 'wind-button red';
+      btnLeft.textContent = i;
+      btnLeft.dataset.value = -i; // vento contra negativo
+      windLeft.appendChild(btnLeft);
+
+      // Botão vento a favor (direita) - verde
+      const btnRight = document.createElement('div');
+      btnRight.className = 'wind-button green';
+      btnRight.textContent = i;
+      btnRight.dataset.value = i; // vento a favor positivo
+      windRight.appendChild(btnRight);
+    }
+  </script>
 
 </body>
 </html>
