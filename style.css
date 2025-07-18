@@ -74,7 +74,7 @@ body {
 
 .wind-buttons {
   position: absolute;
-  top: 200px;
+  top: calc(200px - 1cm);
   display: flex;
   flex-direction: column;
   gap: 4px;
@@ -82,7 +82,7 @@ body {
 }
 
 .wind-buttons.left {
-  left: 10px;
+  left: calc(10px + 1cm);
 }
 
 .wind-buttons.right {
