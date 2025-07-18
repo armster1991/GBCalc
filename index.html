@@ -2,73 +2,48 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Visual Aim Calculator</title>
-  <link rel="stylesheet" href="style.css"/>
-
-  <!-- Não mexi no calculo.js, só o chamei aqui -->
-  <script defer src="calculo.js"></script>
-  
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-
-  <!-- Seletor de Mobiles -->
   <div class="mobile-selectors">
-    <img src="Armor.png" id="armor" class="mobile selected" title="Armor" alt="Armor" />
-    <img src="Mage.png" id="mage" class="mobile" title="Mage" alt="Mage" />
-    <img src="Raon.png" id="raon" class="mobile" title="Raon" alt="Raon" />
-    <img src="Asate.png" id="asate" class="mobile" title="Asate" alt="Asate" />
+    <img src="Armor.png" id="armor" class="mobile" title="Armor" />
+    <img src="Mage.png" id="mage" class="mobile" title="Mage" />
+    <img src="Raon.png" id="raon" class="mobile" title="Raon" />
+    <img src="Asate.png" id="asate" class="mobile" title="Asate" />
   </div>
 
-  <!-- BFR -->
   <div class="bfr" id="bfr">
     <div class="bfr-fill" id="bfr-fill"></div>
-    <div class="marker"></div>
-    <div class="marker"></div>
-    <div class="marker"></div>
   </div>
 
-  <!-- Informações -->
+  <div class="wind-button gray" data-value="0" id="wind-zero">0</div>
+
   <div class="info-panel" id="info-panel">
     <div>Mobile Selecionado: <span id="selected-mobile">Armor</span></div>
     <div>Força Corrigida: <span id="corrected-power">2.00</span></div>
     <div>Ângulo Calculado: <span id="calculated-angle">89°</span></div>
   </div>
 
-  <!-- Botões de vento esquerda (vento contra) -->
-  <div class="wind-buttons left" id="wind-left">
-    <!-- Botões serão inseridos pelo script abaixo -->
+  <div class="wind-buttons left">
+    <script>
+      for (let i = 1; i <= 26; i++) {
+        document.write(`<div class="wind-button red" data-value="-${i}">-${i}</div>`);
+      }
+    </script>
   </div>
 
-  <!-- Botões de vento direita (vento a favor) -->
-  <div class="wind-buttons right" id="wind-right">
-    <!-- Botões serão inseridos pelo script abaixo -->
+  <div class="wind-buttons right">
+    <script>
+      for (let i = 1; i <= 26; i++) {
+        document.write(`<div class="wind-button green" data-value="${i}">${i}</div>`);
+      }
+    </script>
   </div>
 
-  <!-- Régua -->
   <div class="ruler" id="ruler"></div>
 
-  <!-- Script para criar os botões de vento 1 a 26, já com data-value -->
-  <script>
-    const windLeft = document.getElementById('wind-left');
-    const windRight = document.getElementById('wind-right');
-
-    for(let i = 1; i <= 26; i++) {
-      // Botão vento contra (esquerda) - vermelho
-      const btnLeft = document.createElement('div');
-      btnLeft.className = 'wind-button red';
-      btnLeft.textContent = i;
-      btnLeft.dataset.value = -i; // vento contra negativo
-      windLeft.appendChild(btnLeft);
-
-      // Botão vento a favor (direita) - verde
-      const btnRight = document.createElement('div');
-      btnRight.className = 'wind-button green';
-      btnRight.textContent = i;
-      btnRight.dataset.value = i; // vento a favor positivo
-      windRight.appendChild(btnRight);
-    }
-  </script>
-
+  <script src="calculo.js"></script>
 </body>
 </html>
