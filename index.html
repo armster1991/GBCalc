@@ -16,11 +16,11 @@
 
   <!-- AQUI FOI COMENTADO PARA BACKUP DA VERSÃO FUNCIONAL 1.0 -->
   <!-- Nenhum botão de direção existia antes -->
-<div class="wind-directions" id="wind-directions">
-  <div class="wind-dir-button" data-angle="90" title="Leste">→</div>
-  <div class="wind-dir-button" data-angle="45" title="Nordeste">↗</div>
-  <div class="wind-dir-button" data-angle="135" title="Sudeste">↘</div>
-</div>
+  <div class="wind-directions" id="wind-directions">
+    <div class="wind-dir-button" data-angle="90" title="Leste">→</div>
+    <div class="wind-dir-button" data-angle="45" title="Nordeste">↗</div>
+    <div class="wind-dir-button" data-angle="135" title="Sudeste">↘</div>
+  </div>
 
   <div class="bfr" id="bfr">
     <div class="bfr-fill" id="bfr-fill"></div>
@@ -34,6 +34,8 @@
     <div>Força Corrigida: <span id="corrected-power">2.00</span></div>
     <div>Ângulo Calculado: <span id="calculated-angle">89°</span></div>
   </div>
+
+  <div id="alert-correction" style="text-align:center; margin-top:10px; font-weight:bold;"></div>
 
   <div class="wind-buttons left">
     <script>
@@ -53,6 +55,8 @@
 
   <div class="ruler" id="ruler"></div>
 
-  <script src="calculo.js"></script>
+  <!-- AQUI FOI COMENTADO PARA BACKUP DA VERSÃO FUNCIONAL 1.0 -->
+  <!-- <script src="calculo.js"></script> -->
+  <script src="calculo.js" defer></script>
 </body>
 </html>
