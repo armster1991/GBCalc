@@ -17,7 +17,7 @@
     <img src="Asate.png" id="asate" class="mobile" title="Asate" alt="Asate" />
   </div>
 
-  <!-- BFR com divisões -->
+  <!-- BFR -->
   <div class="bfr" id="bfr">
     <div class="bfr-fill" id="bfr-fill"></div>
     <div class="marker"></div>
@@ -32,21 +32,17 @@
     <div>Ângulo Calculado: <span id="calculated-angle">89°</span></div>
   </div>
 
-  <!-- Botões de vento contra (esquerda) -->
-  <div class="wind-buttons left" id="wind-left">
-    <!-- Botões 1 a 26 serão inseridos por JS -->
-  </div>
+  <!-- Botões vento contra (esquerda) -->
+  <div class="wind-buttons left" id="wind-left"></div>
 
-  <!-- Botões de vento a favor (direita) -->
-  <div class="wind-buttons right" id="wind-right">
-    <!-- Botões 1 a 26 serão inseridos por JS -->
-  </div>
+  <!-- Botões vento a favor (direita) -->
+  <div class="wind-buttons right" id="wind-right"></div>
 
   <!-- Régua -->
   <div class="ruler" id="ruler"></div>
 
-  <!-- Script para criar os botões de vento -->
   <script>
+    // Cria os botões de vento antes do calculo.js rodar
     function criarBotoesVento() {
       const leftContainer = document.getElementById('wind-left');
       const rightContainer = document.getElementById('wind-right');
@@ -55,23 +51,26 @@
       rightContainer.innerHTML = '';
 
       for(let i = 1; i <= 26; i++) {
-        // Vento contra (esquerda)
+        // Botões vento contra (esquerda)
         const btnLeft = document.createElement('div');
         btnLeft.className = 'wind-button red';
         btnLeft.textContent = i;
-        btnLeft.dataset.value = i;
+        btnLeft.dataset.value = -i;  // vento contra é negativo
         leftContainer.appendChild(btnLeft);
 
-        // Vento a favor (direita)
+        // Botões vento a favor (direita)
         const btnRight = document.createElement('div');
         btnRight.className = 'wind-button green';
         btnRight.textContent = i;
-        btnRight.dataset.value = i;
+        btnRight.dataset.value = i; // vento a favor positivo
         rightContainer.appendChild(btnRight);
       }
     }
 
-    window.addEventListener('load', criarBotoesVento);
+    window.addEventListener('load', () => {
+      criarBotoesVento();
+    });
   </script>
+
 </body>
 </html>
