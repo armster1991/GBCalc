@@ -65,6 +65,27 @@ windButtons.forEach(btn => {
   });
 });
 
+// AQUI FOI COMENTADO PARA BACKUP DA VERSÃO FUNCIONAL 1.0
+// Nenhuma função de fator/direção existia antes
+
+function getWindFactor(px) {
+  if (px <= 200) return 0.05;    // 1/2 SD
+  if (px <= 400) return 0.10;    // 1 SD
+  if (px <= 600) return 0.25;    // 1.5 SD
+  if (px <= 800) return 0.45;    // 2 SD
+  return 0;
+}
+
+function getDirectionalMultiplier(angle) {
+  if (angle === 90) return 1;       // Leste = vento a favor
+  if (angle === 270) return -1;     // Oeste = contra
+  if (angle === 45) return 0.5;     // Nordeste = semi-favorável
+  if (angle === 135) return 0.5;    // Sudeste = semi-favorável
+  if (angle === 225) return -0.5;   // Sudoeste = semi-contra
+  if (angle === 315) return -0.5;   // Noroeste = semi-contra
+  return 0;                         // norte/sul ignorados
+}
+
 function recalculate() {
   const anglePerPixel = 1 / 20;
   let angleOffset = distancePixels * anglePerPixel;
