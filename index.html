@@ -11,17 +11,23 @@
       background: #000;
       color: white;
       font-family: sans-serif;
-      overflow: hidden;
       margin: 0;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      position: relative;
     }
 
+    /* BFR topo centralizado */
     .bfr {
       width: 400px;
       height: 20px;
       background: #222;
-      margin: 20px auto 0;
+      margin: 20px auto 0 auto;
       position: relative;
       border: 1px solid #555;
+      flex-shrink: 0;
     }
 
     .bfr-fill {
@@ -45,45 +51,122 @@
     .bfr .marker:nth-child(3) { left: 200px; }
     .bfr .marker:nth-child(4) { left: 300px; }
 
-    .ruler {
+    /* Info painel logo abaixo do BFR */
+    #info-panel {
+      width: 400px;
+      margin: 10px auto 0 auto;
+      text-align: center;
+      flex-shrink: 0;
+    }
+
+    /* Mobile selectors em cada canto */
+    .mobile-selectors {
+      position: fixed;
+      width: 100vw;
+      height: 100vh;
+      pointer-events: none; /* para evitar bloquear clicks, vamos habilitar nos imgs */
+    }
+
+    .mobile-selectors img {
+      position: fixed;
+      width: 60px;
+      height: 60px;
+      cursor: pointer;
+      pointer-events: auto;
+    }
+
+    /* Canto superior esquerdo */
+    #armor {
+      top: 10px;
+      left: 10px;
+    }
+
+    /* Canto superior direito */
+    #mage {
+      top: 10px;
+      right: 10px;
+    }
+
+    /* Canto inferior esquerdo */
+    #raon {
+      bottom: 10px;
+      left: 10px;
+    }
+
+    /* Canto inferior direito */
+    #asate {
+      bottom: 10px;
+      right: 10px;
+    }
+
+    /* Régua fixa na parte inferior centralizada */
+    #ruler {
       width: 800px;
       height: 80px;
       background: lightgray;
-      margin: 20px auto;
-      position: relative;
+      position: fixed;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
       overflow: hidden;
+      z-index: 10;
     }
 
-    .ruler::before {
-      content: "";
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: repeating-linear-gradient(
-        to right,
-        rgba(0,0,0,0.4) 0,
-        rgba(0,0,0,0.4) 1px,
-        transparent 1px,
-        transparent 40px
-      );
-      z-index: 2;
-      pointer-events: none;
+    /* Wind buttons container */
+    .wind-buttons.left,
+    .wind-buttons.right {
+      position: fixed;
+      bottom: 80px; /* acima da régua */
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      max-height: calc(100vh - 100px); /* evitar overflow */
+      overflow-y: auto;
+      z-index: 20;
+    }
+
+    .wind-buttons.left {
+      left: calc(50% - 410px); /* 800/2=400 + 10px de margem */
+      align-items: flex-start;
+    }
+
+    .wind-buttons.right {
+      right: calc(50% - 410px);
+      align-items: flex-end;
+    }
+
+    /* Estilo dos botões de vento (exemplo básico) */
+    .wind-button {
+      width: 32px;
+      height: 32px;
+      background: #444;
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      border-radius: 4px;
+      user-select: none;
+      font-weight: bold;
+      font-size: 14px;
+    }
+
+    .wind-button.gray {
+      background: #666;
     }
   </style>
 </head>
 <body>
 
-  <!-- Seletor de Mobiles -->
+  <!-- Seletor de Mobiles em cantos -->
   <div class="mobile-selectors">
-    <img src="Armor.png" id="armor" class="mobile" title="Armor"/>
-    <img src="Mage.png" id="mage" class="mobile" title="Mage"/>
-    <img src="Raon.png" id="raon" class="mobile" title="Raon"/>
-    <img src="Asate.png" id="asate" class="mobile" title="Asate"/>
+    <img src="Armor.png" id="armor" class="mobile" title="Armor" alt="Armor"/>
+    <img src="Mage.png" id="mage" class="mobile" title="Mage" alt="Mage"/>
+    <img src="Raon.png" id="raon" class="mobile" title="Raon" alt="Raon"/>
+    <img src="Asate.png" id="asate" class="mobile" title="Asate" alt="Asate"/>
   </div>
 
-  <!-- BFR com divisões -->
+  <!-- BFR com divisões topo centralizado -->
   <div class="bfr" id="bfr">
     <div class="bfr-fill" id="bfr-fill"></div>
     <div class="marker"></div>
@@ -91,25 +174,24 @@
     <div class="marker"></div>
   </div>
 
-  <!-- Botão de vento zero -->
-  <div class="wind-button gray" data-value="0" style="position: absolute; top: 0; right: 20px; z-index: 20;">0</div>
-
-  <!-- Informações -->
+  <!-- Barra de informações abaixo da BFR -->
   <div class="info-panel" id="info-panel">
     <div>Mobile Selecionado: <span id="selected-mobile">Armor</span></div>
     <div>Força Corrigida: <span id="corrected-power">2.00</span></div>
     <div>Ângulo Calculado: <span id="calculated-angle">89°</span></div>
   </div>
 
-  <!-- Botões de vento -->
-  <div class="wind-buttons left">
-    <!-- Inseridos via JS -->
-  </div>
-  <div class="wind-buttons right">
-    <!-- Inseridos via JS -->
+  <!-- Botões de vento contra (esquerda) -->
+  <div class="wind-buttons left" id="wind-left">
+    <!-- Botões 1 a 26 serão inseridos via JS -->
   </div>
 
-  <!-- Régua -->
+  <!-- Botões de vento a favor (direita) -->
+  <div class="wind-buttons right" id="wind-right">
+    <!-- Botões 1 a 26 serão inseridos via JS -->
+  </div>
+
+  <!-- Régua centralizada fixa na parte inferior -->
   <div class="ruler" id="ruler"></div>
 
 </body>
