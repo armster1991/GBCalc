@@ -142,7 +142,7 @@ body {
   transform: translateX(-50%);
   width: 800px;
   height: 40px;
-  background: lightgray;
+  background: linear-gradient(to right, #444, #666, #444);
   border-radius: 10px;
   box-shadow: 0 0 10px #aaa;
   z-index: 5;
