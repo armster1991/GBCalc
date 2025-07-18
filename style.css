@@ -50,6 +50,16 @@ body {
   transition: width 0.3s ease;
 }
 
+.bfr-marker {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background: white;
+  opacity: 0.5;
+  z-index: 10;
+}
+
 .info-panel {
   position: absolute;
   top: 160px;
@@ -135,4 +145,22 @@ body {
   border-radius: 10px;
   box-shadow: 0 0 10px #aaa;
   z-index: 5;
+}
+
+.ruler::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  background: repeating-linear-gradient(
+    to right,
+    rgba(0, 0, 0, 0.4) 0,
+    rgba(0, 0, 0, 0.4) 1px,
+    transparent 1px,
+    transparent 40px
+  );
+  z-index: 6;
+  pointer-events: none;
 }
