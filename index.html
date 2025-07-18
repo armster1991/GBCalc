@@ -2,9 +2,9 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Visual Aim Calculator</title>
-  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="style.css"/>
   <style>
     body {
       background: #000;
@@ -13,6 +13,7 @@
       overflow: hidden;
       margin: 0;
     }
+
     .bfr {
       width: 400px;
       height: 20px;
@@ -20,67 +21,48 @@
       margin: 20px auto 0;
       position: relative;
       border: 1px solid #555;
-      display: flex;
     }
-.bfr {
-  width: 400px;
-  height: 20px;
-  background: #222;
-  margin: 20px auto 0;
-  position: relative;
-  border: 1px solid #555;
-  overflow: hidden;
-}
-.bfr::before {
-  content: "";
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  background: repeating-linear-gradient(
-    to right,
-    transparent,
-    transparent 99px,
-    #999 100px,
-    #999 101px
-  );
-  z-index: 2;
-  pointer-events: none;
-}
-.bfr-fill {
-  background: lime;
-  height: 100%;
-  width: 50%;
-  transition: width 0.2s;
-  position: absolute;
-  left: 0;
-  top: 0;
-  z-index: 1;
-}
+
+    .bfr-fill {
+      background: lime;
+      height: 100%;
+      width: 50%;
+      transition: width 0.2s;
+      z-index: 1;
     }
-.ruler {
-  width: 800px;
-  height: 80px;
-  background: lightgray;
-  margin: 20px auto;
-  position: relative;
-  overflow: hidden;
-}
-.ruler::before {
-  content: "";
-  position: absolute;
-  height: 100%;
-  width: 100%;
-  background: repeating-linear-gradient(
-    to right,
-    #000,
-    #000 1px,
-    transparent 1px,
-    transparent 40px
-  );
-  opacity: 0.4;
-  z-index: 2;
-  pointer-events: none;
-}
+
+    .bfr-marker {
+      position: absolute;
+      top: 0;
+      width: 1px;
+      height: 100%;
+      background-color: #999;
+      z-index: 2;
+    }
+
+    .bfr-marker:nth-child(2) { left: 100px; }
+    .bfr-marker:nth-child(3) { left: 200px; }
+    .bfr-marker:nth-child(4) { left: 300px; }
+
+    .ruler {
+      width: 800px;
+      height: 80px;
+      background: lightgray;
+      margin: 20px auto;
+      position: relative;
+    }
+
+    .ruler::before {
+      content: "";
+      position: absolute;
+      height: 100%;
+      width: 100%;
+      background: repeating-linear-gradient(to right, #000 0, #000 1px, transparent 1px, transparent 40px);
+      opacity: 0.3;
+      z-index: 2;
+      pointer-events: none;
+    }
+
     .wind-buttons.left,
     .wind-buttons.right {
       position: absolute;
@@ -91,12 +73,10 @@
       gap: 4px;
       z-index: 10;
     }
-    .wind-buttons.left {
-      left: 20px;
-    }
-    .wind-buttons.right {
-      right: 20px;
-    }
+
+    .wind-buttons.left { left: 20px; }
+    .wind-buttons.right { right: 20px; }
+
     .wind-button {
       padding: 4px;
       text-align: center;
@@ -104,23 +84,27 @@
       border-radius: 4px;
       font-size: 12px;
     }
-    .wind-button.red {
-      background: #600;
-    }
-    .wind-button.green {
-      background: #060;
-    }
+
+    .wind-button.red { background: #600; }
+    .wind-button.green { background: #060; }
     .wind-button.gray {
       background: #444;
       color: #ccc;
+      position: absolute;
+      top: 0;
+      right: 20px;
+      z-index: 20;
     }
+
     .wind-button.active {
       outline: 2px solid yellow;
     }
+
     .info-panel {
       text-align: center;
       margin-top: 10px;
     }
+
     .mobile-selectors {
       position: absolute;
       top: 20px;
@@ -130,38 +114,48 @@
       gap: 10px;
       z-index: 10;
     }
+
     .mobile {
       width: 100px;
       height: 110px;
       cursor: pointer;
       border: 2px solid transparent;
     }
+
     .mobile.selected {
       border-color: yellow;
     }
   </style>
 </head>
 <body>
+
+  <!-- Seletor de Mobiles -->
   <div class="mobile-selectors">
-    <img src="Armor.png" id="armor" class="mobile" title="Armor" />
-    <img src="Mage.png" id="mage" class="mobile" title="Mage" />
-    <img src="Raon.png" id="raon" class="mobile" title="Raon" />
-    <img src="Asate.png" id="asate" class="mobile" title="Asate" />
+    <img src="Armor.png" id="armor" class="mobile" title="Armor"/>
+    <img src="Mage.png" id="mage" class="mobile" title="Mage"/>
+    <img src="Raon.png" id="raon" class="mobile" title="Raon"/>
+    <img src="Asate.png" id="asate" class="mobile" title="Asate"/>
   </div>
 
+  <!-- BFR com divisões -->
   <div class="bfr" id="bfr">
     <div class="bfr-fill" id="bfr-fill"></div>
-    <div class="bfr-divider"></div>
+    <div class="bfr-marker" style="left: 100px;"></div>
+    <div class="bfr-marker" style="left: 200px;"></div>
+    <div class="bfr-marker" style="left: 300px;"></div>
   </div>
 
-  <div class="wind-button gray" data-value="0" style="position:absolute; top:0; right:20px; z-index:20;">0</div>
+  <!-- Botão de vento zero -->
+  <div class="wind-button gray" data-value="0">0</div>
 
+  <!-- Informações -->
   <div class="info-panel" id="info-panel">
     <div>Mobile Selecionado: <span id="selected-mobile">Armor</span></div>
     <div>Força Corrigida: <span id="corrected-power">2.00</span></div>
     <div>Ângulo Calculado: <span id="calculated-angle">89°</span></div>
   </div>
 
+  <!-- Botões de vento -->
   <div class="wind-buttons left">
     <script>
       for (let i = 1; i <= 26; i++) {
@@ -177,11 +171,13 @@
     </script>
   </div>
 
+  <!-- Régua -->
   <div class="ruler" id="ruler"></div>
 
+  <!-- Script Principal -->
   <script>
     const ruler = document.getElementById('ruler');
-    const bfr = document.getElementById('bfr-fill');
+    const bfrFill = document.getElementById('bfr-fill');
     const windButtons = document.querySelectorAll('.wind-button');
     const mobiles = document.querySelectorAll('.mobile');
 
@@ -214,9 +210,7 @@
       const rect = ruler.getBoundingClientRect();
       const x = e.clientX - rect.left;
       distancePixels = Math.max(0, Math.min(800, x));
-
-      ruler.style.background = `linear-gradient(to right, lightgray ${distancePixels}px, transparent 0%)`;
-
+      ruler.style.background = `linear-gradient(to right, rgba(255,255,255,0.3) ${distancePixels}px, transparent 0%)`;
       recalculate();
     });
 
@@ -250,10 +244,10 @@
         powerCorrected = power * factorProporcional;
         powerCorrected = Math.min(4.00, powerCorrected);
         let bfrPercent = Math.min(1, powerCorrected / 4);
-        bfr.style.width = `${bfrPercent * 100}%`;
+        bfrFill.style.width = `${bfrPercent * 100}%`;
         angle = newAngle;
       } else {
-        bfr.style.width = '50%';
+        bfrFill.style.width = '50%';
       }
 
       infoAngle.textContent = `${String(Math.round(angle)).padStart(2, '0')}°`;
