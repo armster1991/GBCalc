@@ -1,0 +1,233 @@
+body {
+  background-color: #000;
+  color: white;
+  font-family: Arial, sans-serif;
+  overflow: hidden;
+  margin: 0;
+  padding: 0;
+}
+
+.mobile-selectors {
+  position: absolute;
+  width: auto;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: calc(20px - 2cm); /* Redução de espaçamento entre botões */
+  top: 10px;
+  z-index: 10;
+}
+
+.mobile {
+  width: 100px;
+  height: 110px;
+  cursor: pointer;
+  opacity: 0.6;
+  transition: transform 0.3s, opacity 0.3s;
+}
+
+.mobile.selected {
+  opacity: 1;
+  transform: scale(1.1);
+}
+
+.bfr {
+  position: absolute;
+  top: 130px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 400px;
+  height: 20px;
+  background: #222;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 0 10px #0f0;
+}
+
+.bfr-fill {
+  height: 100%;
+  background: linear-gradient(to right, #0f0, #0c0);
+  width: 50%;
+  transition: width 0.3s ease;
+}
+
+.bfr-marker {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background: white;
+  opacity: 0.5;
+  z-index: 10;
+}
+
+.info-panel {
+  position: absolute;
+  top: 160px;
+  left: 50%;
+  transform: translateX(-50%);
+  text-align: center;
+  font-size: 18px;
+  background: rgba(50, 50, 50, 0.7);
+  padding: 10px 20px;
+  border-radius: 10px;
+}
+
+.wind-buttons {
+  position: absolute;
+  top: calc(200px - 1cm);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  z-index: 5;
+}
+
+.wind-buttons.left {
+  left: calc(10px + 1cm);
+}
+
+.wind-buttons.right {
+  right: calc(10px + 1cm);
+}
+
+.wind-button {
+  width: 40px;
+  height: 24px;
+  text-align: center;
+  line-height: 24px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background 0.3s, transform 0.2s;
+  font-size: 14px;
+  user-select: none;
+}
+
+.wind-button:hover,
+.wind-button.active {
+  transform: scale(1.1);
+  font-weight: bold;
+}
+
+.wind-button.red {
+  background-color: #900;
+}
+
+.wind-button.red:hover,
+.wind-button.red.active {
+  background-color: #f00;
+}
+
+.wind-button.green {
+  background-color: #090;
+}
+
+.wind-button.green:hover,
+.wind-button.green.active {
+  background-color: #0f0;
+}
+
+.wind-button.gray {
+  background-color: #555;
+}
+
+.wind-button.gray:hover,
+.wind-button.gray.active {
+  background-color: #aaa;
+}
+
+.ruler {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 800px;
+  height: 40px;
+  background: linear-gradient(to right, #444, #666, #444);
+  border-radius: 10px;
+  box-shadow: 0 0 10px #aaa;
+  z-index: 5;
+}
+
+.ruler::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  background: repeating-linear-gradient(
+    to right,
+    rgba(0, 0, 0, 0.4) 0,
+    rgba(0, 0, 0, 0.4) 1px,
+    transparent 1px,
+    transparent 40px
+  );
+  z-index: 6;
+  pointer-events: none;
+}
+
+/* AQUI FOI COMENTADO PARA BACKUP DA VERSÃO FUNCIONAL 1.0 */
+/* .wind-directions {
+  position: absolute;
+  top: 10px;
+  left: calc(100% - 100px - 1cm);
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  z-index: 11;
+} */
+
+/* ✅ Direções à direita: Norte, Leste, Nordeste, Sudeste */
+.wind-directions#wind-directions-right {
+  position: absolute;
+  top: 10px;
+  left: calc(100% - 100px - 1cm - 7cm);
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  z-index: 11;
+}
+
+/* AQUI FOI COMENTADO PARA BACKUP DA VERSÃO FUNCIONAL 1.0 — esquerda estava 60px */
+/* .wind-directions#wind-directions-left {
+  position: absolute;
+  top: 60px;
+  left: calc(0px + 1cm + 20px);
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  z-index: 11;
+} */
+
+/* ✅ Direções à esquerda: Sul, Oeste, Noroeste, Sudoeste — alinhadas com as da direita */
+.wind-directions#wind-directions-left {
+  position: absolute;
+  top: 10px;
+  left: calc(0px + 1cm + 20px);
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  z-index: 11;
+}
+
+.wind-dir-button {
+  width: 40px;
+  height: 40px;
+  text-align: center;
+  line-height: 40px;
+  background-color: orange;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 20px;
+  font-weight: bold;
+  color: white;
+  transition: background 0.3s, transform 0.2s;
+  box-shadow: 0 0 8px #ffa500;
+  user-select: none;
+}
+
+.wind-dir-button:hover,
+.wind-dir-button.active {
+  transform: scale(1.1);
+  background-color: #ffb733;
+}
