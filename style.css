@@ -9,11 +9,12 @@ body {
 
 .mobile-selectors {
   position: absolute;
-  width: 100%;
+  width: auto;
+  left: 50%;
+  transform: translateX(-50%);
   display: flex;
-  justify-content: space-between;
+  gap: calc(20px - 2cm); /* Redução de espaçamento entre botões */
   top: 10px;
-  padding: 0 20px;
   z-index: 10;
 }
 
