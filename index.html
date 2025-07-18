@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Visual Aim Calculator</title>
   <link rel="stylesheet" href="style.css"/>
+  <script defer src="calculo.js"></script>
   <style>
     body {
       background: #000;
@@ -31,18 +32,18 @@
       z-index: 1;
     }
 
-    .bfr-marker {
+    .bfr .marker {
       position: absolute;
-      top: 0;
       width: 1px;
       height: 100%;
-      background-color: #999;
+      background-color: white;
+      opacity: 0.6;
       z-index: 2;
     }
 
-    .bfr-marker:nth-child(2) { left: 100px; }
-    .bfr-marker:nth-child(3) { left: 200px; }
-    .bfr-marker:nth-child(4) { left: 300px; }
+    .bfr .marker:nth-child(2) { left: 100px; }
+    .bfr .marker:nth-child(3) { left: 200px; }
+    .bfr .marker:nth-child(4) { left: 300px; }
 
     .ruler {
       width: 800px;
@@ -50,80 +51,25 @@
       background: lightgray;
       margin: 20px auto;
       position: relative;
+      overflow: hidden;
     }
 
     .ruler::before {
       content: "";
       position: absolute;
-      height: 100%;
+      top: 0;
+      left: 0;
       width: 100%;
-      background: repeating-linear-gradient(to right, #000 0, #000 1px, transparent 1px, transparent 40px);
-      opacity: 0.3;
+      height: 100%;
+      background: repeating-linear-gradient(
+        to right,
+        rgba(0,0,0,0.4) 0,
+        rgba(0,0,0,0.4) 1px,
+        transparent 1px,
+        transparent 40px
+      );
       z-index: 2;
       pointer-events: none;
-    }
-
-    .wind-buttons.left,
-    .wind-buttons.right {
-      position: absolute;
-      top: 150px;
-      width: 50px;
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-      z-index: 10;
-    }
-
-    .wind-buttons.left { left: 20px; }
-    .wind-buttons.right { right: 20px; }
-
-    .wind-button {
-      padding: 4px;
-      text-align: center;
-      cursor: pointer;
-      border-radius: 4px;
-      font-size: 12px;
-    }
-
-    .wind-button.red { background: #600; }
-    .wind-button.green { background: #060; }
-    .wind-button.gray {
-      background: #444;
-      color: #ccc;
-      position: absolute;
-      top: 0;
-      right: 20px;
-      z-index: 20;
-    }
-
-    .wind-button.active {
-      outline: 2px solid yellow;
-    }
-
-    .info-panel {
-      text-align: center;
-      margin-top: 10px;
-    }
-
-    .mobile-selectors {
-      position: absolute;
-      top: 20px;
-      left: 20px;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      z-index: 10;
-    }
-
-    .mobile {
-      width: 100px;
-      height: 110px;
-      cursor: pointer;
-      border: 2px solid transparent;
-    }
-
-    .mobile.selected {
-      border-color: yellow;
     }
   </style>
 </head>
@@ -140,13 +86,13 @@
   <!-- BFR com divisões -->
   <div class="bfr" id="bfr">
     <div class="bfr-fill" id="bfr-fill"></div>
-    <div class="bfr-marker" style="left: 100px;"></div>
-    <div class="bfr-marker" style="left: 200px;"></div>
-    <div class="bfr-marker" style="left: 300px;"></div>
+    <div class="marker"></div>
+    <div class="marker"></div>
+    <div class="marker"></div>
   </div>
 
   <!-- Botão de vento zero -->
-  <div class="wind-button gray" data-value="0">0</div>
+  <div class="wind-button gray" data-value="0" style="position: absolute; top: 0; right: 20px; z-index: 20;">0</div>
 
   <!-- Informações -->
   <div class="info-panel" id="info-panel">
@@ -157,102 +103,14 @@
 
   <!-- Botões de vento -->
   <div class="wind-buttons left">
-    <script>
-      for (let i = 1; i <= 26; i++) {
-        document.write(`<div class="wind-button red" data-value="-${i}">-${i}</div>`);
-      }
-    </script>
+    <!-- Inseridos via JS -->
   </div>
   <div class="wind-buttons right">
-    <script>
-      for (let i = 1; i <= 26; i++) {
-        document.write(`<div class="wind-button green" data-value="${i}">${i}</div>`);
-      }
-    </script>
+    <!-- Inseridos via JS -->
   </div>
 
   <!-- Régua -->
   <div class="ruler" id="ruler"></div>
 
-  <!-- Script Principal -->
-  <script>
-    const ruler = document.getElementById('ruler');
-    const bfrFill = document.getElementById('bfr-fill');
-    const windButtons = document.querySelectorAll('.wind-button');
-    const mobiles = document.querySelectorAll('.mobile');
-
-    let currentWind = 0;
-    let selectedMobile = 'armor';
-    let distancePixels = 0;
-
-    const infoMobile = document.getElementById('selected-mobile');
-    const infoPower = document.getElementById('corrected-power');
-    const infoAngle = document.getElementById('calculated-angle');
-
-    const mobileAdjustments = {
-      armor: 0,
-      mage: -0.05,
-      raon: 0.1,
-      asate: 0.05
-    };
-
-    mobiles.forEach(mob => {
-      mob.addEventListener('click', () => {
-        mobiles.forEach(m => m.classList.remove('selected'));
-        mob.classList.add('selected');
-        selectedMobile = mob.id;
-        infoMobile.textContent = mob.title;
-        recalculate();
-      });
-    });
-
-    ruler.addEventListener('mousemove', e => {
-      const rect = ruler.getBoundingClientRect();
-      const x = e.clientX - rect.left;
-      distancePixels = Math.max(0, Math.min(800, x));
-      ruler.style.background = `linear-gradient(to right, rgba(255,255,255,0.3) ${distancePixels}px, transparent 0%)`;
-      recalculate();
-    });
-
-    windButtons.forEach(btn => {
-      btn.addEventListener('mouseenter', () => {
-        windButtons.forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-        currentWind = parseInt(btn.dataset.value);
-        recalculate();
-      });
-    });
-
-    function recalculate() {
-      const anglePerPixel = 1 / 20;
-      let angleOffset = distancePixels * anglePerPixel;
-      let angle = 90 - angleOffset;
-
-      let factor = 0.5;
-      if (currentWind < 0) factor = 0.6;
-      if (currentWind > 0) factor = 0.4;
-      if (currentWind === 0) factor = 0;
-
-      angle += currentWind * factor;
-
-      let power = 2 + mobileAdjustments[selectedMobile];
-      let powerCorrected = power;
-
-      if (angle < 1 || angle > 89) {
-        const newAngle = Math.max(1, Math.min(89, angle));
-        let factorProporcional = (90 - newAngle) / (90 - (90 - distancePixels * anglePerPixel));
-        powerCorrected = power * factorProporcional;
-        powerCorrected = Math.min(4.00, powerCorrected);
-        let bfrPercent = Math.min(1, powerCorrected / 4);
-        bfrFill.style.width = `${bfrPercent * 100}%`;
-        angle = newAngle;
-      } else {
-        bfrFill.style.width = '50%';
-      }
-
-      infoAngle.textContent = `${String(Math.round(angle)).padStart(2, '0')}°`;
-      infoPower.textContent = powerCorrected.toFixed(2);
-    }
-  </script>
 </body>
 </html>
