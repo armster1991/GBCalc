@@ -1,11 +1,15 @@
 // AQUI FOI COMENTADO PARA BACKUP DA VERSÃO FUNCIONAL 1.0
-// Nenhuma referência à direção do vento existia antes
-
-const windDirButtons = document.querySelectorAll('.wind-dir-button');
-let windDirection = 90; // valor inicial: Leste
+// windDirButtons.forEach(btn => {
+//   btn.addEventListener('click', () => {
+//     windDirButtons.forEach(b => b.classList.remove('active'));
+//     btn.classList.add('active');
+//     windDirection = parseInt(btn.dataset.angle);
+//     recalculate();
+//   });
+// });
 
 windDirButtons.forEach(btn => {
-  btn.addEventListener('click', () => {
+  btn.addEventListener('mouseenter', () => {
     windDirButtons.forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
     windDirection = parseInt(btn.dataset.angle);
