@@ -1,71 +1,74 @@
 body {
-  margin: 0;
-  background: #000;
+  background-color: #000;
+  color: white;
+  font-family: Arial, sans-serif;
   overflow: hidden;
-  font-family: 'Segoe UI', sans-serif;
-  color: #fff;
-  user-select: none;
+  margin: 0;
+  padding: 0;
 }
 
 .mobile-selectors {
   position: absolute;
-  top: 10px;
-  left: 10px;
-  right: 10px;
+  width: 100%;
   display: flex;
   justify-content: space-between;
-  pointer-events: none;
+  top: 10px;
+  padding: 0 20px;
+  z-index: 10;
 }
 
 .mobile {
   width: 100px;
   height: 110px;
   cursor: pointer;
-  border: 2px solid transparent;
-  transition: 0.2s;
-  pointer-events: auto;
+  opacity: 0.6;
+  transition: transform 0.3s, opacity 0.3s;
 }
 
 .mobile.selected {
-  border-color: yellow;
-  filter: drop-shadow(0 0 10px yellow);
+  opacity: 1;
+  transform: scale(1.1);
 }
 
-.ruler {
+.bfr {
   position: absolute;
-  bottom: 40px;
+  top: 130px;
   left: 50%;
   transform: translateX(-50%);
-  width: 800px;
-  height: 80px;
+  width: 400px;
+  height: 20px;
   background: #222;
   border-radius: 10px;
-  box-shadow: 0 0 10px #000;
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
   overflow: hidden;
+  box-shadow: 0 0 10px #0f0;
 }
 
-.ruler::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
+.bfr-fill {
   height: 100%;
-  width: 0;
-  background: rgba(255, 255, 0, 0.5);
-  pointer-events: none;
+  background: linear-gradient(to right, #0f0, #0c0);
+  width: 50%;
+  transition: width 0.3s ease;
+}
+
+.info-panel {
+  position: absolute;
+  top: 160px;
+  left: 50%;
+  transform: translateX(-50%);
+  text-align: center;
+  font-size: 18px;
+  background: rgba(50, 50, 50, 0.7);
+  padding: 10px 20px;
+  border-radius: 10px;
 }
 
 .wind-buttons {
   position: absolute;
-  top: 140px;
-  width: 60px;
+  top: 200px;
   display: flex;
   flex-direction: column;
   gap: 4px;
-  z-index: 10;
+  z-index: 5;
 }
 
 .wind-buttons.left {
@@ -77,62 +80,59 @@ body {
 }
 
 .wind-button {
-  width: 60px;
+  width: 40px;
   height: 24px;
-  line-height: 24px;
   text-align: center;
-  border-radius: 5px;
-  font-size: 14px;
-  transition: 0.2s;
+  line-height: 24px;
+  border-radius: 4px;
   cursor: pointer;
-  opacity: 0.8;
+  transition: background 0.3s, transform 0.2s;
+  font-size: 14px;
+  user-select: none;
 }
 
 .wind-button:hover,
 .wind-button.active {
-  transform: scale(1.05);
-  box-shadow: 0 0 10px #fff;
-  opacity: 1;
+  transform: scale(1.1);
+  font-weight: bold;
 }
 
-.red {
-  background: #a00;
+.wind-button.red {
+  background-color: #900;
 }
 
-.green {
-  background: #0a0;
+.wind-button.red:hover,
+.wind-button.red.active {
+  background-color: #f00;
 }
 
-.gray {
-  background: #666;
+.wind-button.green {
+  background-color: #090;
 }
 
-.bfr {
+.wind-button.green:hover,
+.wind-button.green.active {
+  background-color: #0f0;
+}
+
+.wind-button.gray {
+  background-color: #555;
+}
+
+.wind-button.gray:hover,
+.wind-button.gray.active {
+  background-color: #aaa;
+}
+
+.ruler {
   position: absolute;
-  top: 10px;
+  bottom: 20px;
   left: 50%;
   transform: translateX(-50%);
-  width: 400px;
-  height: 20px;
-  background: #333;
+  width: 800px;
+  height: 80px;
+  background: lightgray;
   border-radius: 10px;
-  overflow: hidden;
-  box-shadow: 0 0 5px #000;
-}
-
-.bfr-fill {
-  height: 100%;
-  background: linear-gradient(to right, #0ff, #0f0);
-  width: 50%;
-  transition: width 0.2s ease;
-}
-
-.info-panel {
-  position: absolute;
-  top: 40px;
-  left: 50%;
-  transform: translateX(-50%);
-  text-align: center;
-  font-size: 18px;
-  line-height: 1.6;
+  box-shadow: 0 0 10px #aaa;
+  z-index: 5;
 }
