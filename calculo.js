@@ -1,5 +1,4 @@
 const ruler = document.getElementById('ruler');
-const rulerFill = ruler.querySelector('::before');
 const bfr = document.getElementById('bfr-fill');
 const windButtons = document.querySelectorAll('.wind-button');
 const mobiles = document.querySelectorAll('.mobile');
@@ -8,7 +7,12 @@ let currentWind = 0;
 let selectedMobile = 'armor';
 let distancePixels = 0;
 
-// Constantes
+// Display fields
+const infoMobile = document.getElementById('selected-mobile');
+const infoPower = document.getElementById('corrected-power');
+const infoAngle = document.getElementById('calculated-angle');
+
+// Ajustes de cada mobile
 const mobileAdjustments = {
   armor: 0,
   mage: -0.05,
@@ -21,23 +25,22 @@ mobiles.forEach(mob => {
     mobiles.forEach(m => m.classList.remove('selected'));
     mob.classList.add('selected');
     selectedMobile = mob.id;
+    infoMobile.textContent = mob.title;
     recalculate();
   });
 });
 
-// Hover da régua
 ruler.addEventListener('mousemove', e => {
   const rect = ruler.getBoundingClientRect();
   const x = e.clientX - rect.left;
   distancePixels = Math.max(0, Math.min(800, x));
 
-  ruler.style.setProperty('--fill', `${distancePixels}px`);
+  // Atualizar visual da régua
   ruler.style.background = `linear-gradient(to right, rgba(255,255,0,0.5) ${distancePixels}px, transparent 0%)`;
 
   recalculate();
 });
 
-// Hover dos botões de vento
 windButtons.forEach(btn => {
   btn.addEventListener('mouseenter', () => {
     windButtons.forEach(b => b.classList.remove('active'));
@@ -47,13 +50,11 @@ windButtons.forEach(btn => {
   });
 });
 
-// Função principal de cálculo
 function recalculate() {
   const anglePerPixel = 1 / 20;
   let angleOffset = distancePixels * anglePerPixel;
   let angle = 90 - angleOffset;
 
-  // Fator de vento estimado baseado em direção (simplificação)
   let factor = 0.5;
   if (currentWind < 0) factor = 0.6;
   if (currentWind > 0) factor = 0.4;
@@ -61,28 +62,20 @@ function recalculate() {
 
   angle += currentWind * factor;
 
-  // Ajuste por mobile
   let power = 2 + mobileAdjustments[selectedMobile];
+  let powerCorrected = power;
 
   if (angle < 1 || angle > 89) {
-    // ângulo impossível => recalcular força
-    let newAngle = Math.max(1, Math.min(89, angle));
-    let factorProporcional = (90 - newAngle) / (90 - angleOffset);
-    power *= factorProporcional;
-
-    // Atualizar BFR
-    let bfrPercent = Math.min(1, power / 4);
+    const newAngle = Math.max(1, Math.min(89, angle));
+    let factorProporcional = (90 - newAngle) / (90 - (90 - distancePixels * anglePerPixel));
+    powerCorrected = power * factorProporcional;
+    let bfrPercent = Math.min(1, powerCorrected / 4);
     bfr.style.width = `${bfrPercent * 100}%`;
   } else {
-    bfr.style.width = '50%'; // força padrão
+    bfr.style.width = '50%';
   }
 
-  // Log opcional para debug
-  console.log({
-    pixel: distancePixels,
-    angle: angle.toFixed(2),
-    power: power.toFixed(2),
-    mobile: selectedMobile,
-    wind: currentWind
-  });
+  // Atualizar painel de informações
+  infoAngle.textContent = angle.toFixed(2);
+  infoPower.textContent = powerCorrected.toFixed(2);
 }
