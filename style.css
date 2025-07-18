@@ -87,7 +87,7 @@ body {
 }
 
 .wind-buttons.right {
-  right: calc(10px + -1cm);
+  right: calc(10px - 1cm);
 }
 
 .wind-button {
