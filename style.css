@@ -167,12 +167,20 @@ body {
 }
 
 /* AQUI FOI COMENTADO PARA BACKUP DA VERSÃO FUNCIONAL 1.0 */
-/* Nenhum estilo para botões de direção existia antes */
+/* .wind-directions {
+  position: absolute;
+  top: 10px;
+  left: calc(100% - 100px + 1cm);
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  z-index: 11;
+} */
 
 .wind-directions {
   position: absolute;
   top: 10px;
-  left: calc(100% - 100px + 1cm); /* 1cm à direita do último mobile */
+  left: calc(100% - 100px - 1cm); /* 1cm à esquerda do Asate */
   display: flex;
   flex-direction: row;
   gap: 10px;
