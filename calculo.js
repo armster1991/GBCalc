@@ -65,15 +65,15 @@ function recalculate() {
   let power = 2 + mobileAdjustments[selectedMobile];
   let powerCorrected = power;
 
-  if (angle < 1 || angle > 89) {
-    const newAngle = Math.max(1, Math.min(89, angle));
-    let factorProporcional = (90 - newAngle) / (90 - (90 - distancePixels * anglePerPixel));
-    powerCorrected = power * factorProporcional;
-    let bfrPercent = Math.min(1, powerCorrected / 4);
-    bfr.style.width = `${bfrPercent * 100}%`;
-  } else {
-    bfr.style.width = '50%';
-  }
+if (angle < 1 || angle > 89) {
+  const newAngle = Math.max(1, Math.min(89, angle));
+  let factorProporcional = angle / newAngle;
+  powerCorrected = power * factorProporcional;
+  let bfrPercent = Math.max(0, Math.min(1, powerCorrected / 4));
+  bfr.style.width = `${bfrPercent * 100}%`;
+} else {
+  bfr.style.width = '50%';
+}
 
   // Atualizar painel de informações
   infoAngle.textContent = angle.toFixed(2);
