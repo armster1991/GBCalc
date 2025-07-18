@@ -70,10 +70,15 @@ function recalculate() {
   let angleOffset = distancePixels * anglePerPixel;
   let angle = 90 - angleOffset;
 
-  let factor = 0.5;
-  if (currentWind < 0) factor = 0.6;
-  if (currentWind > 0) factor = 0.4;
-  if (currentWind === 0) factor = 0;
+// AQUI FOI COMENTADO PARA BACKUP DA VERSÃO FUNCIONAL 1.0
+// let factor = 0.5;
+// if (currentWind < 0) factor = 0.6;
+// if (currentWind > 0) factor = 0.4;
+// if (currentWind === 0) factor = 0;
+
+let factor = getWindFactor(distancePixels);
+let directionalImpact = getDirectionalMultiplier(windDirection);
+angle += currentWind * factor * directionalImpact;
 
   angle += currentWind * factor;
 
