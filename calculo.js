@@ -82,7 +82,7 @@ function getWindFactor(px) {
 
 function getDirectionalMultiplier(angle) {
   if (angle === 90) return 1;       // Leste = vento a favor
-  if (angle === 270) return -1;     // Oeste = contra
+  if (angle === 270) return -1;     // Oeste = vento contra
   if (angle === 45) return 0.5;     // Nordeste = semi-favorável
   if (angle === 135) return 0.5;    // Sudeste = semi-favorável
   if (angle === 225) return -0.5;   // Sudoeste = semi-contra
@@ -95,30 +95,54 @@ function recalculate() {
   let angleOffset = distancePixels * anglePerPixel;
   let angle = 90 - angleOffset;
 
-// AQUI FOI COMENTADO PARA BACKUP DA VERSÃO FUNCIONAL 1.0
-// let factor = 0.5;
-// if (currentWind < 0) factor = 0.6;
-// if (currentWind > 0) factor = 0.4;
-// if (currentWind === 0) factor = 0;
+  // AQUI FOI COMENTADO PARA BACKUP DA VERSÃO FUNCIONAL 1.0
+  // let factor = 0.5;
+  // if (currentWind < 0) factor = 0.6;
+  // if (currentWind > 0) factor = 0.4;
+  // if (currentWind === 0) factor = 0;
 
-let factor = getWindFactor(distancePixels);
-let directionalImpact = getDirectionalMultiplier(windDirection);
-angle += currentWind * factor * directionalImpact;
+  let factor = getWindFactor(distancePixels);
+  let directionalImpact = getDirectionalMultiplier(windDirection);
 
-  angle += currentWind * factor;
+  // AQUI FOI COMENTADO PARA BACKUP DA VERSÃO FUNCIONAL 1.0
+  // angle += currentWind * factor;
+  // angle += currentWind * factor * directionalImpact;
+  angle += currentWind * factor * directionalImpact;
 
   let power = 2 + mobileAdjustments[selectedMobile];
   let powerCorrected = power;
 
-if (angle < 1 || angle > 89) {
-  const newAngle = Math.max(1, Math.min(89, angle));
-  let factorProporcional = angle / newAngle;
-  powerCorrected = power * factorProporcional;
-  let bfrPercent = Math.max(0, Math.min(1, powerCorrected / 4));
-  bfr.style.width = `${bfrPercent * 100}%`;
-} else {
-  bfr.style.width = '50%';
-}
+  if (angle < 1 || angle > 89) {
+    const newAngle = Math.max(1, Math.min(89, angle));
+    let factorProporcional = angle / newAngle;
+    powerCorrected = power * factorProporcional;
+    let bfrPercent = Math.max(0, Math.min(1, powerCorrected / 4));
+    bfr.style.width = `${bfrPercent * 100}%`;
+
+    // Estilo de alerta visual
+    infoPower.style.color = 'orange';
+    infoPower.style.fontWeight = 'bold';
+    infoPower.style.textShadow = '0 0 5px #ffa500';
+
+    const alertDiv = document.getElementById('alert-correction');
+    if (alertDiv) {
+      alertDiv.textContent = '⚠️ Ângulo ajustado automaticamente para manter trajetória';
+      alertDiv.style.color = 'orange';
+    }
+
+  } else {
+    bfr.style.width = '50%';
+
+    // Resetar estilo visual
+    infoPower.style.color = '';
+    infoPower.style.fontWeight = '';
+    infoPower.style.textShadow = '';
+
+    const alertDiv = document.getElementById('alert-correction');
+    if (alertDiv) {
+      alertDiv.textContent = '';
+    }
+  }
 
   // Atualizar painel de informações
   // OLD infoAngle.textContent = angle.toFixed(2);
