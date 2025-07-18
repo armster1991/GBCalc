@@ -165,3 +165,38 @@ body {
   z-index: 6;
   pointer-events: none;
 }
+
+/* AQUI FOI COMENTADO PARA BACKUP DA VERSÃO FUNCIONAL 1.0 */
+/* Nenhum estilo para botões de direção existia antes */
+
+.wind-directions {
+  position: absolute;
+  top: 10px;
+  left: calc(100% - 100px + 1cm); /* 1cm à direita do último mobile */
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  z-index: 11;
+}
+
+.wind-dir-button {
+  width: 40px;
+  height: 40px;
+  text-align: center;
+  line-height: 40px;
+  background-color: orange;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 20px;
+  font-weight: bold;
+  color: white;
+  transition: background 0.3s, transform 0.2s;
+  box-shadow: 0 0 8px #ffa500;
+  user-select: none;
+}
+
+.wind-dir-button:hover,
+.wind-dir-button.active {
+  transform: scale(1.1);
+  background-color: #ffb733;
+}
