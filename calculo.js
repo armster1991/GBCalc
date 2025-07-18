@@ -76,6 +76,8 @@ if (angle < 1 || angle > 89) {
 }
 
   // Atualizar painel de informações
-  infoAngle.textContent = angle.toFixed(2);
+  // OLD infoAngle.textContent = angle.toFixed(2);
+  // infoAngle.textContent = Math.max(1, Math.min(89, angle)).toFixed(2);
+  infoAngle.textContent = `${Math.max(1, Math.min(89, angle)).toFixed(2)}° ${angle < 1 || angle > 89 ? `(ajustado de ${angle.toFixed(2)}°)` : ''}`;
   infoPower.textContent = powerCorrected.toFixed(2);
 }
