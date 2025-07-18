@@ -1,284 +1,43 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Gunbound Ruler Calculator</title>
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&display=swap" rel="stylesheet">
-  <style>
-    body {
-      margin: 0;
-      font-family: 'Orbitron', sans-serif;
-      background: linear-gradient(180deg, #0d0d0d 0%, #1a1a1a 100%);
-      color: white;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      height: 100vh;
-      overflow: hidden;
-      position: relative;
-    }
-
-    #bfrv {
-      margin-top: 20px;
-      width: 400px;
-      height: 20px;
-      border: 5px solid black;
-      display: flex;
-      background: linear-gradient(to bottom, #111, #222);
-      position: relative;
-      box-shadow: 0 0 10px #00ff99aa;
-      animation: pulseBar 2s infinite alternate;
-    }
-    @keyframes pulseBar {
-      0% { box-shadow: 0 0 5px #00ff99; }
-      100% { box-shadow: 0 0 15px #00ff99; }
-    }
-
-    .bfrv-part {
-      flex: 1;
-      border-right: 1px solid #666;
-      position: relative;
-      z-index: 2;
-    }
-    .bfrv-part:last-child {
-      border-right: none;
-    }
-    #bfrv-fill {
-      position: absolute;
-      top: 0;
-      left: 0;
-      height: 100%;
-      background: linear-gradient(90deg, #00ff99, #009966);
-      box-shadow: inset 0 0 10px #00ff99aa;
-      z-index: 1;
-      opacity: 0.85;
-      transition: width 0.1s ease-in-out;
-    }
-    #bfrv-force-text {
-      position: absolute;
-      width: 100%;
-      text-align: center;
-      top: 50%;
-      transform: translateY(-50%);
-      font-size: 18px;
-      font-weight: bold;
-      color: #fff;
-      z-index: 3;
-      text-shadow: 1px 1px 2px #000;
-    }
-
-    #controls {
-      margin: 20px 0;
-      display: flex;
-      gap: 20px;
-    }
-
-    #angleButtons {
-      position: absolute;
-      left: 10px;
-      top: 50%;
-      transform: translateY(-50%);
-      display: grid;
-      grid-template-columns: repeat(5, 70px);
-      gap: 5px;
-    }
-    .angle-btn {
-      width: 70px;
-      height: 50px;
-      background: #222;
-      color: #0f0;
-      border: 1px solid #0f0;
-      border-radius: 5px;
-      font-size: 16px;
-      cursor: pointer;
-      text-align: center;
-    }
-    .angle-btn.selected {
-      background: #0f0;
-      color: #000;
-      font-weight: bold;
-    }
-
-    #ruler {
-      position: absolute;
-      bottom: 0;
-      width: 800px;
-      height: 100px;
-      display: flex;
-      justify-content: center;
-      animation: glowRuler 2s infinite alternate;
-    }
-    .segment {
-      width: 40px;
-      height: 100%;
-      background: linear-gradient(180deg, #222, #111);
-      border: 1px solid #333;
-      transition: background 0.1s;
-    }
-    .segment.active {
-      background: linear-gradient(180deg, #0f0, #060);
-      box-shadow: inset 0 0 5px #0f0;
-    }
-    @keyframes glowRuler {
-      0% { box-shadow: 0 0 5px #0f0; }
-      100% { box-shadow: 0 0 15px #0f0; }
-    }
-
-    #gameFrame {
-      width: 800px;
-      height: 600px;
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      pointer-events: none;
-    }
-    #gameFrame::before,
-    #gameFrame::after {
-      content: "";
-      position: absolute;
-      width: 30px;
-      height: 30px;
-      border: 3px solid #0f0;
-      animation: pulse 1s infinite alternate;
-    }
-    #gameFrame::before {
-      top: 0;
-      left: 0;
-      border-right: none;
-      border-bottom: none;
-    }
-    #gameFrame::after {
-      bottom: 0;
-      right: 0;
-      border-left: none;
-      border-top: none;
-    }
-    @keyframes pulse {
-      from { opacity: 0.5; }
-      to { opacity: 1; }
-    }
-
-    #centerText {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      font-size: 32px;
-      font-weight: 900;
-      color: #ff6600;
-      text-align: center;
-      animation: pulseText 1.5s infinite;
-      text-shadow: 0 0 10px #ff6600, 0 0 20px #ff6600;
-    }
-    @keyframes pulseText {
-      0% { transform: translate(-50%, -50%) scale(1); }
-      50% { transform: translate(-50%, -50%) scale(1.1); }
-      100% { transform: translate(-50%, -50%) scale(1); }
-    }
-  </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Visual Aim Calculator</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <div id="bfrv">
-    <div id="bfrv-fill"></div>
-    <div id="bfrv-force-text">0.00</div>
-    <div class="bfrv-part"></div>
-    <div class="bfrv-part"></div>
-    <div class="bfrv-part"></div>
-    <div class="bfrv-part"></div>
+  <div class="mobile-selectors">
+    <img src="Armor.png" id="armor" class="mobile" title="Armor" />
+    <img src="mage.png" id="mage" class="mobile" title="Mage" />
+    <img src="raon.png" id="raon" class="mobile" title="Raon" />
+    <img src="asate.png" id="asate" class="mobile" title="Asate" />
   </div>
 
-  <div id="controls">
-    <select id="mobileSelect">
-      <option value="Aduka">Aduka</option>
-      <option value="Armor">Armor</option>
-      <option value="Mage">Mage</option>
-      <option value="Grub">Grub</option>
-      <option value="Ice">Ice</option>
-      <option value="Nak">Nak Machine</option>
-      <option value="Trico">Trico</option>
-      <option value="BigFoot">Big Foot</option>
-      <option value="Boomer">Boomer</option>
-      <option value="Raon">Raon Launcher</option>
-      <option value="Lightning">Lightning</option>
-      <option value="JD">J.D.</option>
-      <option value="ASate">A. Sate</option>
-      <option value="Turtle">Turtle</option>
-      <option value="Knight">Knight</option>
-      <option value="Dragon">Dragon</option>
-      <option value="JFrog">J.Frog</option>
-      <option value="Kalsiddon">Kalsiddon</option>
-    </select>
+  <div class="bfr" id="bfr">
+    <div class="bfr-fill" id="bfr-fill"></div>
   </div>
 
-  <div id="angleButtons"></div>
-  <div id="ruler"></div>
-  <div id="gameFrame"></div>
-  <div id="centerText">ENCAIXE A JANELA DO JOGO AQUI!</div>
+  <div class="wind-buttons left">
+    <!-- 26 Contra-Vento -->
+    <script>
+      for (let i = 1; i <= 26; i++) {
+        document.write(`<div class="wind-button red" data-value="-${i}">-${i}</div>`);
+      }
+    </script>
+  </div>
+  <div class="wind-buttons right">
+    <!-- 26 A Favor -->
+    <script>
+      for (let i = 1; i <= 26; i++) {
+        document.write(`<div class="wind-button green" data-value="${i}">${i}</div>`);
+      }
+    </script>
+    <div class="wind-button gray" data-value="0">0</div>
+  </div>
 
-  <script>
-    const mobiles = {
-      Aduka:{speed:240,gravity:94},Armor:{speed:230,gravity:98},Mage:{speed:225,gravity:90},Grub:{speed:250,gravity:98},Ice:{speed:250,gravity:98},Nak:{speed:205,gravity:98},Trico:{speed:215,gravity:98},BigFoot:{speed:210,gravity:98},Boomer:{speed:175,gravity:46},Raon:{speed:220,gravity:98},Lightning:{speed:235,gravity:90},JD:{speed:250,gravity:98},ASate:{speed:225,gravity:98},Turtle:{speed:230,gravity:98},Knight:{speed:250,gravity:90},Dragon:{speed:240,gravity:98},JFrog:{speed:280,gravity:98},Kalsiddon:{speed:240,gravity:98}
-    };
+  <div class="ruler" id="ruler"></div>
 
-    const angleButtonsContainer = document.getElementById('angleButtons');
-    let selectedAngle = 45;
-
-    for (let i = 40; i <= 89; i++) {
-      const btn = document.createElement('button');
-      btn.textContent = `${i}°`;
-      btn.className = 'angle-btn';
-      btn.dataset.angle = i;
-      if (i === selectedAngle) btn.classList.add('selected');
-      btn.addEventListener('click', () => {
-        document.querySelectorAll('.angle-btn').forEach(b => b.classList.remove('selected'));
-        btn.classList.add('selected');
-        selectedAngle = i;
-      });
-      angleButtonsContainer.appendChild(btn);
-    }
-
-    const ruler = document.getElementById('ruler');
-    const bfrvFill = document.getElementById('bfrv-fill');
-    const forceText = document.getElementById('bfrv-force-text');
-    const mobileSelect = document.getElementById('mobileSelect');
-
-    for (let i = 0; i < 20; i++) {
-      const segment = document.createElement('div');
-      segment.classList.add('segment');
-      ruler.appendChild(segment);
-    }
-
-    const segments = document.querySelectorAll('.segment');
-
-    ruler.addEventListener('mousemove', (e) => {
-      const rect = ruler.getBoundingClientRect();
-      const mouseX = e.clientX - rect.left;
-      const index = Math.floor(mouseX / 40);
-
-      segments.forEach((seg, i) => {
-        seg.classList.toggle('active', i <= index);
-      });
-
-      const mobile = mobiles[mobileSelect.value];
-      const angle = selectedAngle;
-      const distance = (index + 1) * 40;
-
-      if (!mobile || angle <= 0) return;
-
-      const rad = angle * Math.PI / 180;
-      const sin = Math.sin(2 * rad);
-      const top = mobile.gravity * distance;
-      const bottom = 4 * Math.pow(mobile.speed, 2) * sin;
-      const force = 4 * Math.sqrt(top / bottom);
-
-      const clamped = Math.min(4.0, Math.max(0, force));
-      const percent = (clamped / 4.0) * 100;
-
-      bfrvFill.style.width = `${percent}%`;
-      forceText.textContent = clamped.toFixed(2);
-    });
-  </script>
+  <script src="calculo.js"></script>
 </body>
 </html>
