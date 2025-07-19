@@ -172,6 +172,7 @@ window.addEventListener('DOMContentLoaded', () => {
       return;
     }
 
+    // ⚙️ Mage refinado com base na planilha paga
     const anglePerPixel = 1 / 20;
     let angleOffset = distancePixels * anglePerPixel;
     let angle = 90 - angleOffset;
@@ -181,8 +182,13 @@ window.addEventListener('DOMContentLoaded', () => {
     angle += currentWind * factor * directionalImpact;
 
     let power = 2 + (mobileAdjustments[selectedMobile] || 0);
-    let powerCorrected = power;
+    if (selectedMobile === 'mage') {
+      power = 2.4;
+      if (currentWind > 7) angle += 1;
+      if (currentWind > 18) angle += 1;
+    }
 
+    let powerCorrected = power;
     const angleWasCorrected = angle < 1 || angle > 89;
     const newAngle = Math.max(1, Math.min(89, angle));
     const bfrPercent = Math.max(0, Math.min(1, powerCorrected / 4));
@@ -194,7 +200,6 @@ window.addEventListener('DOMContentLoaded', () => {
       infoPower.style.color = 'orange';
       infoPower.style.fontWeight = 'bold';
       infoPower.style.textShadow = '0 0 5px #ffa500';
-
       powerLabel.textContent = 'Força Corrigida';
       angleLabel.textContent = 'Ângulo Corrigido';
     } else {
