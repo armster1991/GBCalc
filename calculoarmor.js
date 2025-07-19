@@ -1,8 +1,9 @@
-// calculoarmor.js
 function calculateArmorMode({ distancePixels, windStrength, windAngle, update }) {
   const totalPixels = 800;
   const divisions = 30;
   const pixelsPerPart = totalPixels / divisions;
+  const F0 = 2.48; // Potência base para 1 tela
+  const parts = Math.floor(distancePixels / pixelsPerPart);
   const maxAngle = 90;
 
   function getWindImpact(angle) {
@@ -18,25 +19,24 @@ function calculateArmorMode({ distancePixels, windStrength, windAngle, update })
     return 0.4;
   }
 
-  const parts = Math.floor(distancePixels / pixelsPerPart);
-  const baseAngle = maxAngle - parts;
+  // Potência base por partes (modo fixo de 35°)
+  let basePower = 1.0;
+  if (parts <= 5) basePower = 1.24;
+  else if (parts <= 10) basePower = 1.75;
+  else if (parts <= 15) basePower = 2.15;
+  else if (parts <= 20) basePower = 2.48;
+  else if (parts <= 25) basePower = 2.77;
+  else basePower = 3.03;
 
   const windFactor = getWindFactor(windAngle);
   const impact = getWindImpact(windAngle);
-  const correction = windStrength * windFactor;
+  const i = impact === 'contra' ? 0.96 : impact === 'a favor' ? -0.96 : 0;
+  const windCorrection = (basePower / F0) * (windStrength * i) / 100;
 
-  const rawAngle =
-    impact === 'a favor'
-      ? baseAngle + correction
-      : impact === 'contra'
-      ? baseAngle - correction
-      : baseAngle;
+  const finalPower = Math.min(4.0, basePower + windCorrection);
 
-  const finalAngle = Math.max(1, Math.min(89, rawAngle));
+  // Ângulo fixo padrão de 35° para tiros retos
+  const finalAngle = 35;
 
-  const basePower = 2.4;
-  const correctedPower =
-    rawAngle > 89 ? basePower * (rawAngle / finalAngle) : basePower;
-
-  update(finalAngle, correctedPower);
+  update(finalAngle, finalPower);
 }
