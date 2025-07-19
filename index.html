@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>GBCalc by Armster1991</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <!-- 🔹 Seleção de mobile -->
+  <div class="mobile-selectors">
+    <img src="Armor.png" id="armor" class="mobile" title="Armor" />
+    <img src="Mage.png" id="mage" class="mobile" title="Mage" />
+    <img src="Raon.png" id="raon" class="mobile" title="Raon" />
+    <img src="Asate.png" id="asate" class="mobile" title="Asate" />
+  </div>
+
+  <!-- 💬 Texto flutuante azul: Direção do Vento -->
+<div id="wind-direction-label">Direção do Vento</div>
+
+  <!-- 🧭 Direções do vento na lateral direita -->
+  <div class="wind-directions-vertical" id="wind-directions-vertical">
+    <div class="wind-dir-button green" data-angle="45" title="Nordeste">↗</div>
+    <div class="wind-dir-button green" data-angle="90" title="Leste">→</div>
+    <div class="wind-dir-button green" data-angle="135" title="Sudeste">↘</div>
+    <div class="wind-dir-button gray" data-angle="0" title="Norte">↑</div>
+    <div class="wind-dir-button gray" data-angle="180" title="Sul">↓</div>
+    <div class="wind-dir-button red" data-angle="225" title="Sudoeste">↙</div>
+    <div class="wind-dir-button red" data-angle="270" title="Oeste">←</div>
+    <div class="wind-dir-button red" data-angle="315" title="Noroeste">↖</div>
+  </div>
+
+  <!-- 🌬️ RVV com marcações de 0 a 26 -->
+  <div class="rvv-container">
+    <div class="rvv" id="rvv" title="Força do Vento">
+      <div class="rvv-labels">
+        <div class="rvv-number">0</div>
+        <div class="rvv-number">1</div>
+        <div class="rvv-number">2</div>
+        <div class="rvv-number">3</div>
+        <div class="rvv-number">4</div>
+        <div class="rvv-number">5</div>
+        <div class="rvv-number">6</div>
+        <div class="rvv-number">7</div>
+        <div class="rvv-number">8</div>
+        <div class="rvv-number">9</div>
+        <div class="rvv-number">10</div>
+        <div class="rvv-number">11</div>
+        <div class="rvv-number">12</div>
+        <div class="rvv-number">13</div>
+        <div class="rvv-number">14</div>
+        <div class="rvv-number">15</div>
+        <div class="rvv-number">16</div>
+        <div class="rvv-number">17</div>
+        <div class="rvv-number">18</div>
+        <div class="rvv-number">19</div>
+        <div class="rvv-number">20</div>
+        <div class="rvv-number">21</div>
+        <div class="rvv-number">22</div>
+        <div class="rvv-number">23</div>
+        <div class="rvv-number">24</div>
+        <div class="rvv-number">25</div>
+        <div class="rvv-number">26</div>
+      </div>
+    </div>
+    <div class="rvv-tooltip" id="rvv-tooltip">0</div>
+  </div>
+
+  <!-- 🔋 Barra de força -->
+  <div class="bfr" id="bfr">
+    <div class="bfr-fill" id="bfr-fill"></div>
+    <div class="bfr-marker" style="left: 100px;"></div>
+    <div class="bfr-marker" style="left: 200px;"></div>
+    <div class="bfr-marker" style="left: 300px;"></div>
+  </div>
+
+  <!-- 📊 Painel de informações -->
+  <div class="info-panel" id="info-panel">
+    <div>Mobile Selecionado: <span id="selected-mobile">Armor</span></div>
+    <div><span id="power-label">Força</span>: <span id="corrected-power">2.00</span></div>
+    <div><span id="angle-label">Ângulo</span>: <span id="calculated-angle">89°</span></div>
+    <div id="wind-debug">Vento: Leste (a favor)</div>
+  </div>
+
+  <!-- ⚠️ Mensagem extra para correções -->
+  <div id="alert-correction" style="text-align:center; margin-top:10px; font-weight:bold;"></div>
+
+  <!-- 💡 Texto de ajuda sobre a régua -->
+  <div id="ruler-help" style="position:absolute; bottom:85px; left:50%; transform:translateX(-50%); font-size:16px; font-style:italic; color:#ccc; text-shadow:0 0 5px #999;">
+    Ponha o mouse em cima da posição de seu alvo
+  </div>
+
+  <!-- 📐 Régua horizontal de posicionamento -->
+  <div class="ruler" id="ruler"></div>
+
+  <!-- 🖼️ Imagens de referência na régua -->
+  <img src="Voce.png" width="70" height="70" style="position:absolute; bottom:calc(65px - 1cm); left:calc(50% - 410px - 2cm);" />
+  <img src="Alvo.png" width="70" height="70" style="position:absolute; bottom:calc(65px - 1cm); left:calc(50% + 340px + 2cm);" />
+
+  <script src="calculo.js" defer></script>
+</body>
+</html>
