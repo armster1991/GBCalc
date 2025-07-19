@@ -1,8 +1,7 @@
-// calculoturtle.js
 function calculateTurtleMode({ distancePixels, windStrength, windAngle, update }) {
   const totalPixels = 800;
-  const divisions = 30;
-  const pixelsPerPart = totalPixels / divisions;
+  const parts = 30;
+  const pixelsPerPart = totalPixels / parts;
   const maxAngle = 90;
 
   function getWindImpact(angle) {
@@ -18,27 +17,31 @@ function calculateTurtleMode({ distancePixels, windStrength, windAngle, update }
     return 0.4;
   }
 
-  const parts = Math.floor(distancePixels / pixelsPerPart);
-  const baseAngle = maxAngle - parts;
+  const distanceParts = Math.floor(distancePixels / pixelsPerPart);
+  const baseAngle = maxAngle - distanceParts;
 
   const windFactor = getWindFactor(windAngle);
   const impact = getWindImpact(windAngle);
-  let correction = windStrength * windFactor;
+  let windCorrection = windStrength * windFactor;
 
-  // 🔧 Ajuste extra para ventos fortes
-  if (windStrength > 7) correction += 1;
-  if (windStrength > 18) correction += 1;
+  if (windStrength > 7) windCorrection += 1;
+  if (windStrength > 18) windCorrection += 1;
 
   const rawAngle =
-    impact === 'a favor' ? baseAngle + correction :
-    impact === 'contra' ? baseAngle - correction :
+    impact === 'a favor' ? baseAngle + windCorrection :
+    impact === 'contra' ? baseAngle - windCorrection :
     baseAngle;
 
   const finalAngle = Math.max(1, Math.min(89, rawAngle));
 
-  const basePower = 2.4;
-  const correctedPower =
-    rawAngle > 89 ? basePower * (rawAngle / finalAngle) : basePower;
+  // 🔋 Potência por distância (SS2 refinado)
+  let basePower = 1.0;
+  const distanceFraction = distancePixels / totalPixels;
+  if (distanceFraction <= 0.33) basePower = 1.6;
+  else if (distanceFraction <= 0.5) basePower = 2.1;
+  else basePower = 2.4;
 
-  update(finalAngle, correctedPower);
+  const finalPower = Math.min(basePower, 4.0);
+
+  update(finalAngle, finalPower);
 }
