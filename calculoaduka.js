@@ -41,13 +41,13 @@ function calculateAdukaMode({ distancePixels, windStrength, windAngle, update })
   // 🔒 Limitar ângulo entre 30° e 89°
   let finalAngle = Math.max(minAngle, Math.min(maxAngle, rawAngle));
 
-  // 🔋 Potência por distância (valores clássicos)
+  // 🔋 Potência por distância (SS2: +0.2 aplicado)
   let basePower = 1.0;
   const distanceFraction = distancePixels / totalPixels;
-  if (distanceFraction <= 0.33) basePower = 1.1;
-  else if (distanceFraction <= 0.5) basePower = 1.7;
-  else if (distanceFraction <= 0.75) basePower = 2.2;
-  else basePower = 2.7;
+  if (distanceFraction <= 0.33) basePower = 1.3;
+  else if (distanceFraction <= 0.5) basePower = 1.9;
+  else if (distanceFraction <= 0.75) basePower = 2.4;
+  else basePower = 2.9;
 
   // 🧪 Ajuste de força se ângulo foi travado abaixo do ideal
   let correctedPower = basePower;
@@ -68,3 +68,4 @@ function calculateAdukaMode({ distancePixels, windStrength, windAngle, update })
 
   update(finalAngle, correctedPower);
 }
+
