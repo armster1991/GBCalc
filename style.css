@@ -1,0 +1,307 @@
+body {
+  background: url('background.png') no-repeat center center fixed;
+  background-size: cover;
+  background-color: #000;
+  color: white;
+  font-family: Arial, sans-serif;
+  overflow: hidden;
+  margin: 0;
+  padding: 0;
+}
+
+/* 🔹 Seleção de mobile */
+.mobile-selectors {
+  position: absolute;
+  top: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: calc(20px - 2cm);
+  z-index: 10;
+}
+
+.mobile {
+  width: 100px;
+  height: 110px;
+  cursor: pointer;
+  opacity: 0.6;
+  transition: transform 0.3s, opacity 0.3s;
+}
+
+.mobile.selected {
+  opacity: 1;
+  transform: scale(1.1);
+  animation: pulse-silhouette 2.4s infinite;
+  filter: drop-shadow(0 0 6px #00ccff);
+}
+
+/* 🔄 Botões de direção vertical */
+.wind-directions-vertical {
+  position: absolute;
+  top: 100px;
+  right: calc(10px + 1cm);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  z-index: 11;
+}
+
+.wind-dir-button {
+  width: 40px;
+  height: 40px;
+  text-align: center;
+  line-height: 40px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 20px;
+  font-weight: bold;
+  color: white;
+  user-select: none;
+  transition: transform 0.2s;
+}
+
+.wind-dir-button.green {
+  background-color: #090;
+}
+
+.wind-dir-button.green:hover,
+.wind-dir-button.green.active {
+  background-color: #0f0;
+}
+
+.wind-dir-button.green.active {
+  animation: pulse-green 2.2s infinite;
+}
+
+.wind-dir-button.red {
+  background-color: #900;
+}
+
+.wind-dir-button.red:hover,
+.wind-dir-button.red.active {
+  background-color: #f00;
+}
+
+.wind-dir-button.red.active {
+  animation: pulse-red 2.2s infinite;
+}
+
+.wind-dir-button.gray {
+  background-color: #555;
+}
+
+.wind-dir-button.gray:hover,
+.wind-dir-button.gray.active {
+  background-color: #aaa;
+}
+
+.wind-dir-button.gray.active {
+  animation: pulse-gray 2.2s infinite;
+}
+
+.wind-dir-button:hover,
+.wind-dir-button.active {
+  transform: scale(1.1);
+}
+
+/* 🌬️ Texto flutuante: Direção do Vento */
+#wind-direction-label {
+  position: absolute;
+  top: 1cm;
+  right: 0cm;
+  transform: translateX(50%);
+  font-size: 18px;
+  font-weight: bold;
+  color: #00ccff;
+  text-shadow: 0 0 8px #00ccff;
+  animation: pulse-tooltip 1.5s infinite;
+  user-select: none;
+  z-index: 12;
+}
+
+/* 🌬️ RVV com marcações embutidas */
+.rvv-container {
+  position: absolute;
+  top: 50%;
+  left: calc(10px + 1cm);
+  transform: translateY(-50%);
+  width: 80px;
+  height: 15cm;
+  z-index: 11;
+}
+
+.rvv {
+  width: 100%;
+  height: 100%;
+  background-color: #333;
+  border-radius: 8px;
+  transition: background-color 0.4s, box-shadow 0.4s;
+  box-shadow: 0 0 0 rgba(0,0,0,0);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  padding: 4px 0;
+}
+
+.rvv-labels {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+  width: 100%;
+  align-items: center;
+  padding: 4px 0;
+}
+
+.rvv-number {
+  font-size: 11px;
+  color: white;
+  opacity: 0.6;
+  user-select: none;
+}
+
+/* ☁️ Tooltip flutuante sobre RVV */
+.rvv-tooltip {
+  position: absolute;
+  top: calc(50% - 9.4cm);
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 22px;
+  font-weight: bold;
+  color: white;
+  text-shadow: 0 0 8px currentColor;
+  animation: pulse-tooltip 1.5s infinite;
+  user-select: none;
+  z-index: 12;
+  background: none !important;
+  border: none !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  box-shadow: none !important;
+  width: auto !important;
+  height: auto !important;
+  line-height: normal !important;
+}
+
+/* 🔧 Barra de força */
+.bfr {
+  position: absolute;
+  top: 130px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 400px;
+  height: 20px;
+  background: #222;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 0 10px #0f0;
+}
+
+.bfr-fill {
+  height: 100%;
+  background: linear-gradient(to right, #0f0, #0c0);
+  width: 50%;
+  transition: width 0.3s ease;
+}
+
+.bfr-marker {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background: white;
+  opacity: 0.5;
+  z-index: 10;
+}
+
+/* 📊 Painel de informações */
+.info-panel {
+  position: absolute;
+  top: 160px;
+  left: 50%;
+  transform: translateX(-50%);
+  text-align: center;
+  font-size: 18px;
+  background: rgba(50, 50, 50, 0.7);
+  padding: 10px 20px;
+  border-radius: 10px;
+}
+
+/* 📎 Debug de vento */
+#wind-debug {
+  margin-top: 6px;
+  font-size: 16px;
+  color: #ccc;
+  font-style: italic;
+}
+
+/* 💬 Texto acima da régua */
+#ruler-help {
+  position: absolute;
+  bottom: 85px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 16px;
+  font-style: italic;
+  color: #ccc;
+  text-shadow: 0 0 5px #999;
+}
+
+/* 📐 Régua horizontal */
+.ruler {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 800px;
+  height: 40px;
+  background: linear-gradient(to right, #444, #666, #444);
+  border-radius: 10px;
+  box-shadow: 0 0 10px #aaa;
+  z-index: 5;
+}
+
+.ruler::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  background: repeating-linear-gradient(to right, rgba(0, 0, 0, 0.4) 0, rgba(0, 0, 0, 0.4) 1px, transparent 1px, transparent 40px);
+  z-index: 6;
+  pointer-events: none;
+}
+
+/* 🔁 Animações */
+@keyframes pulse-silhouette {
+  0%   { filter: drop-shadow(0 0 6px #00ccff); }
+  50%  { filter: drop-shadow(0 0 20px #00eeff); }
+  100% { filter: drop-shadow(0 0 6px #00ccff); }
+}
+
+@keyframes pulse-green {
+  0%   { box-shadow: 0 0 6px #090; }
+  50%  { box-shadow: 0 0 16px #0f0; }
+  100% { box-shadow: 0 0 6px #090; }
+}
+
+@keyframes pulse-orange {
+  0% { box-shadow: 0 0 6px #ffa500; }
+  50% { box-shadow: 0 0 16px #ffcc66; }
+  100% { box-shadow: 0 0 6px #ffa500; }
+}
+
+@keyframes pulse-gray {
+  0% { box-shadow: 0 0 4px #aaa; }
+  50% { box-shadow: 0 0 12px #ccc; }
+  100% { box-shadow: 0 0 4px #aaa; }
+}
+
+@keyframes pulse-tooltip {
+  0%   { transform: translateX(-50%) scale(1); opacity: 1; }
+  50%  { transform: translateX(-50%) scale(1.2); opacity: 0.85; }
+  100% { transform: translateX(-50%) scale(1); opacity: 1; }
+}
