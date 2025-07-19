@@ -14,14 +14,11 @@ window.addEventListener('DOMContentLoaded', () => {
   const powerLabel = document.getElementById('power-label');
   const angleLabel = document.getElementById('angle-label');
   const rulerHelp = document.getElementById('ruler-help');
-  const adukaSelectors = document.getElementById('aduka-angle-selectors');
-  const adukaAngles = document.querySelectorAll('.aduka-angle');
 
   let currentWind = 0;
   let windDirection = 90;
   let selectedMobile = 'armor';
   let distancePixels = 0;
-  let adukaManualAngle = null;
 
   const mobileAdjustments = {
     mage: -0.05,
@@ -49,21 +46,6 @@ window.addEventListener('DOMContentLoaded', () => {
       mob.classList.add('selected');
       selectedMobile = mob.id;
       infoMobile.textContent = mob.title;
-      adukaManualAngle = null;
-
-      if (selectedMobile === 'aduka') {
-        adukaSelectors.style.display = 'flex';
-      } else {
-        adukaSelectors.style.display = 'none';
-      }
-
-      recalculate();
-    });
-  });
-
-  adukaAngles.forEach(btn => {
-    btn.addEventListener('mouseenter', () => {
-      adukaManualAngle = parseInt(btn.dataset.angle);
       recalculate();
     });
   });
@@ -185,7 +167,6 @@ window.addEventListener('DOMContentLoaded', () => {
         distancePixels,
         windStrength: currentWind,
         windAngle: windDirection,
-        manualAngle: adukaManualAngle,
         update: applyVisuals
       });
       return;
@@ -221,7 +202,6 @@ window.addEventListener('DOMContentLoaded', () => {
       infoPower.style.color = '';
       infoPower.style.fontWeight = '';
       infoPower.style.textShadow = '';
-
       powerLabel.textContent = 'Força';
       angleLabel.textContent = 'Ângulo';
     }
